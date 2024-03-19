@@ -2,6 +2,7 @@ import { Stack, Box } from "@mui/material";
 import { ChatHeader, ChatFooter } from "../../components/Chat";
 import { TextMsg } from "../../sections/dashboard/Conversation";
 import { useState } from "react";
+import { askQuestion } from "../../api/educationServerless";
 
 const Chat_History: Message[] = [
   {
@@ -22,17 +23,21 @@ interface Message {
 const ChatComponent: React.FC = () => {
   const [items, setItems] = useState<Message[]>(Chat_History);
 
-  const handleQuestion = async (newData: string): Promise<void> => {
-    if (!newData) return;
+  const handleQuestion = async (q: string): Promise<void> => {
+    if (!q) return;
 
     const question: Message = {
       type: "msg",
-      message: newData,
+      message: q,
       incoming: false,
       outgoing: true,
     };
 
-    const apiResponse = "sun";
+    const newItems = [...items, question];
+    setItems(newItems);
+
+    const apiResponse: string = await askQuestion(q);
+
     if (apiResponse) {
       const response: Message = {
         type: "msg",
