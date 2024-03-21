@@ -2,6 +2,8 @@ import React from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
 import { Message } from "../../components/types";
+import "katex/dist/katex.min.css";
+import Latex from "react-latex-next";
 
 const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
   const theme = useTheme();
@@ -26,7 +28,7 @@ const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
           variant="body2"
           color={el.incoming ? theme.palette.text.primary : "#fff"}
         >
-          {el.text}
+          <Latex>{el.text}</Latex>
         </Typography>
       </Box>
     </Stack>
