@@ -2,7 +2,6 @@ import { Stack, Box } from "@mui/material";
 import { ChatHeader, ChatFooter } from "../../components/Chat";
 import { TextMsg } from "../../sections/dashboard/Conversation";
 import { useState } from "react";
-
 import { Message } from "../../components/types";
 import { mapMessagesForOpenAI } from "../../utils/messageMapper";
 import askQuestion from "../../api/educationServerless";
@@ -19,7 +18,7 @@ const Chat_History: Message[] = [
 const Messages_For_OpenAI: Message[] = [
   {
     type: "msg",
-    text: "If there is a formula in our chat please format it in Latex",
+    text: "If there is a formula in our chat please format it in Latex and don't mention the format type.",
     incoming: true,
     outgoing: false,
   },
@@ -68,6 +67,7 @@ const ChatComponent: React.FC = () => {
       <ChatHeader />
       <Box
         width={"100%"}
+        height={"100vh"}
         sx={{
           position: "relative",
           flexGrow: 1,

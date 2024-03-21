@@ -5,15 +5,17 @@ import ChatComponent from "./Conversation";
 import Chats from "./Chats";
 import NoChat from "../../assets/Illustration/NoChat";
 import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const GeneralApp: React.FC = () => {
   const theme = useTheme();
+  const isMobile = useMediaQuery("(max-width:600px)");
   const [searchParams] = useSearchParams();
 
   return (
     <>
-      <Stack direction="row" sx={{ width: "100%" }}>
-        <Chats />
+      <Stack direction="row" sx={{ width: "100%", height: "100vh" }}>
+        {!isMobile && <Chats />}
         <Box
           sx={{
             width: "100%",
@@ -31,7 +33,7 @@ const GeneralApp: React.FC = () => {
           ) : (
             <Stack
               spacing={2}
-              sx={{ height: "100%", width: "100%" }}
+              sx={{ width: "100%", height: "100vh" }}
               alignItems="center"
               justifyContent={"center"}
             >
