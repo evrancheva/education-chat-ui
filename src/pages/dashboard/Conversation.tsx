@@ -24,7 +24,6 @@ const Messages_For_OpenAI: Message[] = [
     outgoing: false,
   },
 ];
-
 const ChatComponent: React.FC = () => {
   const [items, setItems] = useState<Message[]>(Chat_History);
 
@@ -60,7 +59,7 @@ const ChatComponent: React.FC = () => {
       const newItems = [...items, question, response];
       setItems(newItems);
       // Add the questions to the array of messages for OPEN AI
-      Messages_For_OpenAI.push(question);
+      Messages_For_OpenAI.push(response);
     }
   };
 
