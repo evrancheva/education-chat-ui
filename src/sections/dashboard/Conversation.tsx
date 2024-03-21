@@ -1,13 +1,7 @@
 import React from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
-
-interface Message {
-  type: string;
-  message: string;
-  incoming: boolean;
-  outgoing: boolean;
-}
+import { Message } from "../../components/types";
 
 const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
   const theme = useTheme();
@@ -32,7 +26,7 @@ const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
           variant="body2"
           color={el.incoming ? theme.palette.text.primary : "#fff"}
         >
-          {el.message}
+          {el.text}
         </Typography>
       </Box>
     </Stack>

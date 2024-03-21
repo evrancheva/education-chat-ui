@@ -1,9 +1,21 @@
-const ENDPOINT_URL: string = import.meta.env.VITE_EDUCATION_URL || "";
+import { OpenAIMessage } from "../utils/types";
+const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_URL || "";
 
-const askQuestion = async (q: string): Promise<string> => {
+const askQuestion = async (messages: OpenAIMessage[]): Promise<string> => {
   try {
-    const url = `${ENDPOINT_URL}/ask?q=${encodeURIComponent(q)}`;
-    const response = await fetch(url);
+    const url = `${EDUCATION_API_URL}/ask`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(messages),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data, status: ${response.status}`);
+    }
+
     const jsonData = await response.json();
     return jsonData.response;
   } catch (error) {
@@ -12,4 +24,4 @@ const askQuestion = async (q: string): Promise<string> => {
   }
 };
 
-export { askQuestion };
+export default askQuestion;
