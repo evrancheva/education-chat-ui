@@ -64,6 +64,7 @@ const ChatComponent: React.FC = () => {
 
   return (
     <Stack height={"100%"} maxHeight={"100vh"}>
+      <ChatHeader />
       <Box
         width={"100%"}
         height={"100vh"}
@@ -75,7 +76,6 @@ const ChatComponent: React.FC = () => {
           boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
         }}
       >
-        <ChatHeader />
         <Box p={1}>
           <Stack spacing={3}>
             {items.map((el, idx) => {
@@ -83,8 +83,8 @@ const ChatComponent: React.FC = () => {
             })}
           </Stack>
         </Box>
-        <ChatFooter handleQuestion={handleQuestion} />
       </Box>
+      <ChatFooter handleQuestion={handleQuestion} />
     </Stack>
   );
 };
