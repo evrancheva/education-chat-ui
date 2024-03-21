@@ -63,20 +63,20 @@ const ChatComponent: React.FC = () => {
   };
 
   return (
-    <Stack height={"100%"} maxHeight={"100vh"}>
+    <Stack height={"100vh"} direction="column">
       <ChatHeader />
       <Box
-        width={"100%"}
-        height={"100vh"}
         sx={{
           position: "relative",
           flexGrow: 1,
           overflow: "scroll",
           backgroundColor: "#F0F4FA",
           boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <Box p={1}>
+        <Box p={1} flex="1">
           <Stack spacing={3}>
             {items.map((el, idx) => {
               return <TextMsg key={idx} el={el} />;
