@@ -15,6 +15,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ handleQuestion }) => {
+  const theme = useTheme();
   const [inputValue, setInputValue] = useState("");
 
   const handleKeyChange = (e: KeyboardEvent) => {
@@ -37,12 +38,12 @@ const Footer: React.FC<FooterProps> = ({ handleQuestion }) => {
     }
   };
 
-  const theme = useTheme();
-
   return (
     <Box
       sx={{
-        position: "relative",
+        position: "fixed",
+        bottom: 0,
+        width: "100%",
         backgroundColor: "transparent !important",
       }}
     >
