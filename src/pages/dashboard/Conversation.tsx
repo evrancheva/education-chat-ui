@@ -67,7 +67,8 @@ const ChatComponent: React.FC = () => {
       <ChatHeader />
       <Box
         sx={{
-          flexGrow: 11,
+          position: "relative",
+          flexGrow: 1,
           overflow: "scroll",
           backgroundColor: "#F0F4FA",
           boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",

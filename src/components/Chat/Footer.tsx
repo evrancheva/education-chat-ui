@@ -41,7 +41,7 @@ const Footer: React.FC<FooterProps> = ({ handleQuestion }) => {
   return (
     <Box
       sx={{
-        flexGrow: 1,
+        position: "relative",
         backgroundColor: "transparent !important",
       }}
     >
