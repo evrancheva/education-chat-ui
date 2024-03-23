@@ -1,15 +1,18 @@
-import { OpenAIMessage } from "../utils/types";
 const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_URL || "";
+import { Message } from "../../components/Chat/types";
+import { map } from "./mappers/messageMapper";
+import { OpenAIMessage } from "./models/types";
 
-const askQuestion = async (messages: OpenAIMessage[]): Promise<string> => {
+const getAnswer = async (incomingMessages: Message[]): Promise<string> => {
   try {
+    const history: OpenAIMessage[] = map(incomingMessages);
     const url = `${EDUCATION_API_URL}/ask`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(messages),
+      body: JSON.stringify(history),
     });
 
     if (!response.ok) {
@@ -24,4 +27,4 @@ const askQuestion = async (messages: OpenAIMessage[]): Promise<string> => {
   }
 };
 
-export default askQuestion;
+export default getAnswer;

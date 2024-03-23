@@ -1,11 +1,11 @@
 import React from "react";
 import { Stack, Box, Typography } from "@mui/material";
 import { useTheme, alpha } from "@mui/material/styles";
-import { Message } from "../../components/types";
+import { Message as MessageModel } from "./types";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 
-const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
+const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
   const theme = useTheme();
   return (
     <Stack
@@ -35,4 +35,4 @@ const TextMsg: React.FC<{ el: Message }> = ({ el }) => {
   );
 };
 
-export { TextMsg };
+export { Message };

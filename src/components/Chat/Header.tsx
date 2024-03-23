@@ -31,7 +31,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
-const ChatHeader: React.FC = () => {
+const Header: React.FC = () => {
   return (
     <Box
       p={2}
@@ -69,4 +69,4 @@ const ChatHeader: React.FC = () => {
   );
 };
 
-export default ChatHeader;
+export default Header;

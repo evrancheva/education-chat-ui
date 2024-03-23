@@ -1,11 +1,8 @@
 import { memo } from "react";
-// @mui
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
-// ----------------------------------------------------------------------
-
-function NoChat({ ...other }) {
+const NoChat: React.FC = ({ ...other }) => {
   const theme = useTheme();
 
   const PRIMARY_MAIN = theme.palette.primary.main;
@@ -328,6 +325,6 @@ function NoChat({ ...other }) {
       </svg>
     </Box>
   );
-}
+};
 
 export default memo(NoChat);

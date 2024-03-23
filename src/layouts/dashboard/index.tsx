@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import SideBar from "./SideBar";
+import SideBar from "../../components/Shared/SideBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const DashboardLayout: React.FC = () => {

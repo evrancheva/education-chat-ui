@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { Link, useSearchParams } from "react-router-dom";
-import ChatComponent from "./Conversation";
-import Chats from "./Chats";
+import ChatComponent from "../../components/Chat/Conversation";
+import Chats from "../../components/History/History";
 import NoChat from "../../assets/Illustration/NoChat";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";

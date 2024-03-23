@@ -1,6 +1,4 @@
-import { PATH_DASHBOARD } from "./routes/paths";
-
 // DEFAULT ROOT PATH
-const DEFAULT_PATH: string = PATH_DASHBOARD.app;
+const DEFAULT_PATH: string = "/app";
 
 export { DEFAULT_PATH };

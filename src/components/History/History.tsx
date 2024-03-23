@@ -2,7 +2,20 @@ import React from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
-import { ChatList } from "../../data";
+import { faker } from "@faker-js/faker";
+
+const ChatList = [
+  {
+    id: 0,
+    img: faker.image.avatar(),
+    name: faker.name.firstName(),
+    msg: "Math lessons",
+    time: "9:36",
+    unread: 0,
+    pinned: true,
+    online: true,
+  },
+];
 
 const truncateText = (string: string, n: number): string => {
   return string.length > n ? `${string.slice(0, n)}...` : string;
