@@ -2,6 +2,7 @@ import React, { useState, KeyboardEvent, ChangeEvent } from "react";
 import { Box, IconButton, Stack, TextField } from "@mui/material";
 import { PaperPlaneTilt } from "phosphor-react";
 import { useTheme, styled } from "@mui/material/styles";
+import useResponsive from "../../hooks/useResponsive";
 
 const StyledInput = styled(TextField)(() => ({
   "& .MuiInputBase-input": {
@@ -38,54 +39,44 @@ const Footer: React.FC<FooterProps> = ({ handleQuestion }) => {
     }
   };
 
+  const isMobile = useResponsive("between", "md", "xs", "sm");
   return (
     <Box
+      p={isMobile ? 1 : 2}
       sx={{
-        position: "relative",
-        backgroundColor: "transparent !important",
+        backgroundColor: "#F8FAFF",
+        boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
     >
-      <Box
-        p={1}
-        sx={{
-          backgroundColor: "#F8FAFF",
-          boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
-        }}
-      >
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Stack sx={{ width: "100%" }}>
-            <StyledInput
-              fullWidth
-              placeholder="Write a message..."
-              variant="filled"
-              InputProps={{
-                disableUnderline: true,
-              }}
-              value={inputValue}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-            />
-          </Stack>
-          <Box
-            sx={{
-              height: 48,
-              width: 48,
-              backgroundColor: theme.palette.primary.main,
-              borderRadius: 1.5,
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack sx={{ width: "100%" }}>
+          <StyledInput
+            fullWidth
+            placeholder="Write a message..."
+            variant="filled"
+            InputProps={{
+              disableUnderline: true,
             }}
-          >
-            <Stack
-              sx={{ height: "100%" }}
-              alignItems="center"
-              justifyContent="center"
-            >
-              <IconButton onClick={askQuestion}>
-                <PaperPlaneTilt color="#ffffff" />
-              </IconButton>
-            </Stack>
-          </Box>
+            value={inputValue}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+          />
         </Stack>
-      </Box>
+        <Box
+          sx={{
+            height: 48,
+            width: 48,
+            backgroundColor: theme.palette.primary.main,
+            borderRadius: 1.5,
+          }}
+        >
+          <Stack alignItems="center" justifyContent="center">
+            <IconButton onClick={askQuestion}>
+              <PaperPlaneTilt color="#ffffff" />
+            </IconButton>
+          </Stack>
+        </Box>
+      </Stack>
     </Box>
   );
 };

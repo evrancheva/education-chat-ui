@@ -2,10 +2,10 @@ import React from "react";
 import { Stack } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import SideBar from "../../components/Shared/SideBar";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import useResponsive from "../../hooks/useResponsive";
 
 const DashboardLayout: React.FC = () => {
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useResponsive("between", "md", "xs", "sm");
   return (
     <>
       <Stack direction="row">

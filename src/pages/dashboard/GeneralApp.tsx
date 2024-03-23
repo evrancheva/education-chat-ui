@@ -5,11 +5,12 @@ import ChatComponent from "../../components/Chat/Conversation";
 import Chats from "../../components/History/History";
 import NoChat from "../../assets/Illustration/NoChat";
 import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import useResponsive from "../../hooks/useResponsive";
 
 const GeneralApp: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useResponsive("between", "md", "xs", "sm");
+
   const [searchParams] = useSearchParams();
 
   return (

@@ -6,16 +6,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
 
-const Chat_History: Message[] = [
-  {
-    type: "msg",
-    text: "Hi 👋🏻, how can I help you today?",
-    incoming: true,
-    outgoing: false,
-  },
-];
-
-const Instructions: Message[] = [
+const History: Message[] = [
   {
     type: "msg",
     text: "If there is a formula in our chat please format it in Latex and don't mention the format type.",
@@ -24,7 +15,15 @@ const Instructions: Message[] = [
   },
 ];
 const ChatComponent: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>(Chat_History);
+  const [messages, setMessages] = useState<Message[]>([
+    // Initial hello message
+    {
+      type: "msg",
+      text: "Hi 👋🏻, how can I help you today?",
+      incoming: true,
+      outgoing: false,
+    },
+  ]);
 
   const handleQuestion = async (q: string): Promise<void> => {
     if (!q) return;
@@ -41,9 +40,9 @@ const ChatComponent: React.FC = () => {
     setMessages(newMessages);
 
     // Add the questions to the array of messages for OPEN AI
-    Instructions.push(question);
+    History.push(question);
 
-    const response: string = await getAnswer(Instructions);
+    const response: string = await getAnswer(History);
 
     if (response) {
       const answer: Message = {
@@ -57,12 +56,12 @@ const ChatComponent: React.FC = () => {
       const newMessages = [...messages, question, answer];
       setMessages(newMessages);
       // Add the questions to the array of messages for OPEN AI
-      Instructions.push(answer);
+      History.push(answer);
     }
   };
 
   return (
-    <Stack height={"100vh"} direction="column">
+    <Stack height={"100vh"} direction="column" display="flex">
       <Header />
       <Content messages={messages} />
       <Footer handleQuestion={handleQuestion} />
