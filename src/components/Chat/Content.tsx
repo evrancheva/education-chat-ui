@@ -21,7 +21,7 @@ const Content: React.FC<ContentProps> = ({ messages }) => {
     <Box
       sx={{
         flexGrow: 1,
-        overflow: "scroll",
+        overflowY: "scroll",
         backgroundColor: "#F0F4FA",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}

@@ -21,15 +21,10 @@ const GeneralApp: React.FC = () => {
           sx={{
             width: "100%",
             backgroundColor: "#FFF",
-            borderBottom:
-              searchParams.get("type") === "individual-chat" &&
-              searchParams.get("id")
-                ? "0px"
-                : "6px solid #0162C4",
+            borderBottom: searchParams.get("id") ? "0px" : "6px solid #0162C4",
           }}
         >
-          {searchParams.get("type") === "individual-chat" &&
-          searchParams.get("id") ? (
+          {searchParams.get("id") ? (
             <ChatComponent />
           ) : (
             <Stack
@@ -46,7 +41,7 @@ const GeneralApp: React.FC = () => {
                     color: theme.palette.primary.main,
                     textDecoration: "none",
                   }}
-                  to="/app?id=0&type=individual-chat"
+                  to="/app?id=0"
                 >
                   new one
                 </Link>

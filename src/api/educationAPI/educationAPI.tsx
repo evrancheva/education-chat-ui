@@ -1,4 +1,4 @@
-const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_URL || "";
+const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
 import { Message } from "../../components/Chat/types";
 import { map } from "./mappers/messageMapper";
 import { OpenAIMessage } from "./models/types";
