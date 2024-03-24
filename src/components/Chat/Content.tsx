@@ -1,31 +1,37 @@
 import { Box, Stack } from "@mui/system";
 import { Message as MessageComponent } from "./Message";
 import { Message } from "./types";
-
+import React, { useEffect, useRef } from "react";
 interface ContentProps {
   messages: Message[];
 }
 
 const Content: React.FC<ContentProps> = ({ messages }) => {
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <Box
       sx={{
-        position: "relative",
         flexGrow: 1,
         overflow: "scroll",
         backgroundColor: "#F0F4FA",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      <Box p={1} flex="1">
-        <Stack spacing={3}>
-          {messages.map((el, idx) => {
-            return <MessageComponent key={idx} el={el} />;
-          })}
-        </Stack>
-      </Box>
+      <Stack p={2} spacing={3}>
+        {messages.map((el, idx) => {
+          return <MessageComponent key={idx} el={el} />;
+        })}
+      </Stack>
+      <Box ref={messagesEndRef} />
     </Box>
   );
 };
