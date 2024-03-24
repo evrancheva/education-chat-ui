@@ -28,7 +28,7 @@ const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
           variant="body2"
           color={el.incoming ? theme.palette.text.primary : "#fff"}
         >
-          <Latex>{el.text}</Latex>
+          <Latex>{el.text.replace(/\n/g, "<br/>")}</Latex>
         </Typography>
       </Box>
     </Stack>
