@@ -3,10 +3,10 @@ import { Message as MessageComponent } from "./Message";
 import { Message } from "./types";
 import React, { useEffect, useRef } from "react";
 interface ContentProps {
-  messages: Message[];
+  chatHistory: Message[];
 }
 
-const Content: React.FC<ContentProps> = ({ messages }) => {
+const Content: React.FC<ContentProps> = ({ chatHistory }) => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -15,7 +15,7 @@ const Content: React.FC<ContentProps> = ({ messages }) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [chatHistory]);
 
   return (
     <Box
@@ -27,11 +27,11 @@ const Content: React.FC<ContentProps> = ({ messages }) => {
       }}
     >
       <Stack p={2} spacing={3}>
-        {messages.map((el, idx) => {
+        {chatHistory.map((el, idx) => {
           return <MessageComponent key={idx} el={el} />;
         })}
       </Stack>
-      <Box ref={messagesEndRef} />
+      <div ref={messagesEndRef} />
     </Box>
   );
 };

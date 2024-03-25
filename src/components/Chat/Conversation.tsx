@@ -6,17 +6,21 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
 
-const History: Message[] = [
+// We use the next array to pass instructions to OPENAI, as well as the context of the information
+const Context: Message[] = [
   {
     type: "msg",
+    // Without this we won't be able to display the formulas nicely
     text: "If there is a formula in our chat please format it in Latex and don't mention the format type.",
     incoming: true,
     outgoing: false,
   },
 ];
+
 const ChatComponent: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    // Initial hello message
+  // chatHistory array is used for displaying all the messages in the chat
+  const [chatHistory, setChatHistory] = useState<Message[]>([
+    // Initial hello message that is displayed when entering the chat
     {
       type: "msg",
       text: "Hi 👋🏻, how can I help you today?",
@@ -25,6 +29,12 @@ const ChatComponent: React.FC = () => {
     },
   ]);
 
+  // Function to add a message to Context
+  const addToContext = (message: Message): void => {
+    Context.push(message);
+  };
+
+  // Function to handle the question
   const handleQuestion = async (q: string): Promise<void> => {
     if (!q) return;
 
@@ -36,13 +46,12 @@ const ChatComponent: React.FC = () => {
     };
 
     // Show the question to the chat
-    const newMessages = [...messages, question];
-    setMessages(newMessages);
+    setChatHistory([...chatHistory, question]);
 
-    // Add the questions to the array of messages for OPEN AI
-    History.push(question);
+    // Add the question to the context that is passed to OPEN AI
+    addToContext(question);
 
-    const response: string = await getAnswer(History);
+    const response: string = await getAnswer(Context);
 
     if (response) {
       const answer: Message = {
@@ -52,18 +61,18 @@ const ChatComponent: React.FC = () => {
         outgoing: false,
       };
 
-      // Show the answer to the chat
-      const newMessages = [...messages, question, answer];
-      setMessages(newMessages);
-      // Add the questions to the array of messages for OPEN AI
-      History.push(answer);
+      // Show the question to the chat
+      setChatHistory([...chatHistory, question, answer]);
+
+      // Add the answer to the context that is passed to OPEN AI
+      addToContext(answer);
     }
   };
 
   return (
     <Stack height={"100vh"} direction="column" display="flex">
       <Header />
-      <Content messages={messages} />
+      <Content chatHistory={chatHistory} />
       <Footer handleQuestion={handleQuestion} />
     </Stack>
   );

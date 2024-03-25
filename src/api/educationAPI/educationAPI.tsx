@@ -5,14 +5,14 @@ import { OpenAIMessage } from "./models/types";
 
 const getAnswer = async (incomingMessages: Message[]): Promise<string> => {
   try {
-    const history: OpenAIMessage[] = map(incomingMessages);
+    const context: OpenAIMessage[] = map(incomingMessages);
     const url = `${EDUCATION_API_URL}/ask`;
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(history),
+      body: JSON.stringify(context),
     });
 
     if (!response.ok) {

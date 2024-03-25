@@ -1,14 +1,12 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
-import { Link, useSearchParams } from "react-router-dom";
+import { Box, Stack } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
 import ChatComponent from "../../components/Chat/Conversation";
 import Chats from "../../components/History/History";
-import NoChat from "../../assets/Illustration/NoChat";
-import { useTheme } from "@mui/material/styles";
-import useResponsive from "../../hooks/useResponsive";
+import useResponsive from "../../utils/useResponsive";
+import InitialScreen from "../../components/Chat/InitialScreen";
 
 const GeneralApp: React.FC = () => {
-  const theme = useTheme();
   const isMobile = useResponsive("between", "md", "xs", "sm");
 
   const [searchParams] = useSearchParams();
@@ -24,30 +22,7 @@ const GeneralApp: React.FC = () => {
             borderBottom: searchParams.get("id") ? "0px" : "6px solid #0162C4",
           }}
         >
-          {searchParams.get("id") ? (
-            <ChatComponent />
-          ) : (
-            <Stack
-              spacing={2}
-              sx={{ width: "100%", height: "100vh" }}
-              alignItems="center"
-              justifyContent={"center"}
-            >
-              <NoChat />
-              <Typography variant="subtitle2">
-                Select a conversation or start a{" "}
-                <Link
-                  style={{
-                    color: theme.palette.primary.main,
-                    textDecoration: "none",
-                  }}
-                  to="/app?id=0"
-                >
-                  new one
-                </Link>
-              </Typography>
-            </Stack>
-          )}
+          {searchParams.get("id") ? <ChatComponent /> : <InitialScreen />}
         </Box>
       </Stack>
     </>

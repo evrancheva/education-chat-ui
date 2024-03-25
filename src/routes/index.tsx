@@ -11,7 +11,7 @@ export default function Router() {
       element: <DashboardLayout />,
       children: [
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
-        { path: "app", element: <GeneralApp /> },
+        { path: "chat", element: <GeneralApp /> },
       ],
     },
     { path: "*", element: <Navigate to="/404" replace /> },
