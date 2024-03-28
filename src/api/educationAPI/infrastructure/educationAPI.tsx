@@ -1,11 +1,8 @@
 const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
-import { Message } from "../../components/Chat/types";
-import { map } from "./mappers/messageMapper";
-import { OpenAIMessage } from "./models/types";
+import { OpenAIMessage } from "../models/types";
 
-const getAnswer = async (incomingMessages: Message[]): Promise<string> => {
+const fetchAnswer = async (context: OpenAIMessage[]): Promise<string> => {
   try {
-    const context: OpenAIMessage[] = map(incomingMessages);
     const url = `${EDUCATION_API_URL}/ask`;
     const response = await fetch(url, {
       method: "POST",
@@ -27,4 +24,4 @@ const getAnswer = async (incomingMessages: Message[]): Promise<string> => {
   }
 };
 
-export default getAnswer;
+export default fetchAnswer;

@@ -1,0 +1,9 @@
+.text {
+  p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  em {
+    font-style: normal;
+  }
+}

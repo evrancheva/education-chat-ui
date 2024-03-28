@@ -4,8 +4,15 @@ import { useTheme, alpha } from "@mui/material/styles";
 import { Message as MessageModel } from "./types";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
+import ReactDOMServer from "react-dom/server";
+import HTMLRenderer from "../Shared/HtmlRenderer";
 
 const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
+  // We need that because the Latex Component doesn't render children
+  const renderedHTMLmessageTxt = ReactDOMServer.renderToString(
+    <HTMLRenderer htmlContent={el.text} />
+  );
+
   const theme = useTheme();
   return (
     <Stack
@@ -28,7 +35,7 @@ const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
           variant="body2"
           color={el.incoming ? theme.palette.text.primary : "#fff"}
         >
-          <Latex>{el.text.replace(/\n/g, "<br/>")}</Latex>
+          <Latex>{renderedHTMLmessageTxt}</Latex>
         </Typography>
       </Box>
     </Stack>

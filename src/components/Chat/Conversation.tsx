@@ -1,21 +1,18 @@
 import { Stack } from "@mui/material";
 import { useState } from "react";
 import { Message } from "./types";
-import getAnswer from "../../api/educationAPI/educationAPI";
 import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
+import getAnswer from "../../api/educationAPI/services/educationService";
 
 // We use the next array to pass instructions to OPENAI, as well as the context of the information
-const Context: Message[] = [
-  {
-    type: "msg",
-    // Without this we won't be able to display the formulas nicely
-    text: "If there is a formula in our chat please format it in Latex and don't mention the format type.",
-    incoming: true,
-    outgoing: false,
-  },
+const Instructions: string[] = [
+  "Answer should be embedded in html tags.",
+  "If there is a formula in our chat please format it in Latex.",
 ];
+
+const Context: Message[] = [];
 
 const ChatComponent: React.FC = () => {
   // chatHistory array is used for displaying all the messages in the chat
@@ -51,7 +48,7 @@ const ChatComponent: React.FC = () => {
     // Add the question to the context that is passed to OPEN AI
     addToContext(question);
 
-    const response: string = await getAnswer(Context);
+    const response: string = await getAnswer(Instructions, Context);
 
     if (response) {
       const answer: Message = {
