@@ -28,6 +28,7 @@ const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
             ? alpha(theme.palette.background.default, 1)
             : theme.palette.primary.main,
           borderRadius: 1.5,
+          maxWidth: "90%",
         }}
       >
         <Typography

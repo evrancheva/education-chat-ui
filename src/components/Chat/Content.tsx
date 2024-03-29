@@ -1,5 +1,5 @@
 import { Box, Stack } from "@mui/system";
-import { Message as MessageComponent } from "./Message";
+import { Message as MessageComponent } from "./Message/Message";
 import { Message } from "./types";
 import React, { useEffect, useRef } from "react";
 interface ContentProps {
