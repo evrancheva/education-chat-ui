@@ -5,12 +5,12 @@ import { Message as MessageModel } from "./types";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import ReactDOMServer from "react-dom/server";
-import HTMLRenderer from "../Shared/HtmlRenderer";
+import HTMLRenderer from "./Common/HtmlRenderer";
 
 const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
-  // We need that because the Latex Component doesn't render children
+  // We need that because the Latex Component doesn't render children components, only strings
   const renderedHTMLmessageTxt = ReactDOMServer.renderToString(
-    <HTMLRenderer htmlContent={el.text} />
+    <HTMLRenderer htmlContent={el.text} className="messageContent" />
   );
 
   const theme = useTheme();
@@ -28,7 +28,6 @@ const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
             ? alpha(theme.palette.background.default, 1)
             : theme.palette.primary.main,
           borderRadius: 1.5,
-          maxWidth: "90%",
         }}
       >
         <Typography

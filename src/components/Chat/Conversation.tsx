@@ -6,10 +6,10 @@ import Footer from "./Footer";
 import Content from "./Content";
 import getAnswer from "../../api/educationAPI/services/educationService";
 
-// We use the next array to pass instructions to OPENAI, as well as the context of the information
+// We use the next array to pass instructions to OPENAI
 const Instructions: string[] = [
   "Answer should be embedded in html tags.",
-  "If there is a formula in our chat please format it in Latex.",
+  "If there is a formula, format it in Latex.",
 ];
 
 const Context: Message[] = [];

@@ -1,15 +1,14 @@
-const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
-import { OpenAIMessage } from "../models/types";
-
-const fetchAnswer = async (context: OpenAIMessage[]): Promise<string> => {
+const getPostData = async (
+  apiUrlEndpoint: string,
+  body: string
+): Promise<string> => {
   try {
-    const url = `${EDUCATION_API_URL}/ask`;
-    const response = await fetch(url, {
+    const response = await fetch(apiUrlEndpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(context),
+      body: body,
     });
 
     if (!response.ok) {
@@ -24,4 +23,4 @@ const fetchAnswer = async (context: OpenAIMessage[]): Promise<string> => {
   }
 };
 
-export default fetchAnswer;
+export default getPostData;

@@ -1,5 +1,5 @@
 import { Message } from "../../../components/Chat/types";
-import { OpenAIMessage, Role } from "../models/types";
+import { OpenAIMessage, Role } from "../types";
 
 export const mapMessages = (messages: Message[]): OpenAIMessage[] => {
   return messages.map((message) => ({
