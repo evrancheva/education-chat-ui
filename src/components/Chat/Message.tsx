@@ -5,7 +5,7 @@ import { Message as MessageModel } from "./types";
 import "katex/dist/katex.min.css";
 import Latex from "react-latex-next";
 import ReactDOMServer from "react-dom/server";
-import HTMLRenderer from "./Common/HtmlRenderer";
+import HTMLRenderer from "./Common/HtmlRenderer/HtmlRenderer";
 
 const Message: React.FC<{ el: MessageModel }> = ({ el }) => {
   // We need that because the Latex Component doesn't render children components, only strings
