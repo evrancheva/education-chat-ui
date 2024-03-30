@@ -2,7 +2,6 @@ import React, { useState, KeyboardEvent, ChangeEvent } from "react";
 import { Box, IconButton, Stack, TextField } from "@mui/material";
 import { PaperPlaneTilt } from "phosphor-react";
 import { useTheme, styled } from "@mui/material/styles";
-import useResponsive from "../../utils/useResponsive";
 
 const StyledInput = styled(TextField)(() => ({
   "& .MuiInputBase-input": {
