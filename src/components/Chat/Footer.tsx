@@ -39,11 +39,11 @@ const Footer: React.FC<FooterProps> = ({ handleQuestion }) => {
     }
   };
 
-  const isMobile = useResponsive("between", "md", "xs", "sm");
   return (
     <Box
-      p={isMobile ? 1 : 2}
+      p={1}
       sx={{
+        height: "50px",
         backgroundColor: "#F8FAFF",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}

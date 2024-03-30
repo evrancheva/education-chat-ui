@@ -67,7 +67,7 @@ const ChatComponent: React.FC = () => {
   };
 
   return (
-    <Stack height={"100vh"} direction="column" display="flex">
+    <Stack height={"100vh"}>
       <Header />
       <Content chatHistory={chatHistory} />
       <Footer handleQuestion={handleQuestion} />

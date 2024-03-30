@@ -33,8 +33,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 const Header: React.FC = () => {
   return (
     <Box
-      p={2}
+      p={1}
       sx={{
+        height: "50px",
         backgroundColor: "#F8FAFF",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
