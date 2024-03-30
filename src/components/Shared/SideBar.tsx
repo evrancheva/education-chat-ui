@@ -1,4 +1,4 @@
-import { Box, Divider, IconButton, Stack } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Logo from "../../assets/Images/logo.ico";
 import { ChatCircleDots } from "phosphor-react";
@@ -14,37 +14,39 @@ const SideBar: React.FC = () => {
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
     >
-      <Stack py={3} alignItems={"center"} justifyContent="space-between">
-        <Stack alignItems={"center"} spacing={4}>
+      <Stack
+        alignItems={"center"}
+        spacing={4}
+        py={3}
+        justifyContent="space-between"
+      >
+        <Box
+          sx={{
+            height: 48,
+            width: 48,
+            borderRadius: 1.5,
+            backgroundColor: theme.palette.primary.main,
+          }}
+          p={1}
+        >
+          <img src={Logo} alt="Tawk" height={48} width={48} />
+        </Box>
+        <Stack
+          sx={{ width: "max-content" }}
+          direction="column"
+          alignItems={"center"}
+        >
           <Box
             sx={{
-              height: 48,
-              width: 48,
-              borderRadius: 1.5,
               backgroundColor: theme.palette.primary.main,
+              borderRadius: 1.5,
             }}
             p={1}
           >
-            <img src={Logo} alt="Tawk" height={48} width={48} />
+            <IconButton sx={{ width: "max-content", color: "#ffffff" }}>
+              <ChatCircleDots />
+            </IconButton>
           </Box>
-          <Stack
-            sx={{ width: "max-content" }}
-            direction="column"
-            alignItems={"center"}
-          >
-            <Box
-              sx={{
-                backgroundColor: theme.palette.primary.main,
-                borderRadius: 1.5,
-              }}
-              p={1}
-            >
-              <IconButton sx={{ width: "max-content", color: "#ffffff" }}>
-                <ChatCircleDots />
-              </IconButton>
-            </Box>
-            <Divider sx={{ width: 48 }} />
-          </Stack>
         </Stack>
       </Stack>
     </Box>

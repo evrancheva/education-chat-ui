@@ -82,31 +82,23 @@ const ChatElement: React.FC<Props> = (props) => {
 const Chats: React.FC = () => {
   return (
     <Box
+      p={2}
       sx={{
-        position: "relative",
-        minWidth: 300,
+        height: "100%",
+        width: "400px",
         backgroundColor: "#F8FAFF",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
     >
-      <Stack>
-        <Stack
-          alignItems="center"
-          justifyContent="space-between"
-          direction="row"
-        ></Stack>
-        <Stack sx={{ flexGrow: 1 }}>
-          <Stack sx={{ flexGrow: 1, height: "100vh" }} pl={2}>
-            <Typography variant="h5" sx={{ color: "#676667" }} mb={2} pt={3}>
-              History
-            </Typography>
-            <Box pr={2} sx={{ overflow: "scroll", height: "100%" }}>
-              {ChatList.map((el, idx) => {
-                return <ChatElement key={idx} {...el} />;
-              })}
-            </Box>
-          </Stack>
-        </Stack>
+      <Stack sx={{ height: "100%" }}>
+        <Typography variant="h5" sx={{ color: "#676667" }} mb={2} pt={3}>
+          History
+        </Typography>
+        <Box pr={2} sx={{ overflow: "scroll", height: "100%" }}>
+          {ChatList.map((el, idx) => {
+            return <ChatElement key={idx} {...el} />;
+          })}
+        </Box>
       </Stack>
     </Box>
   );

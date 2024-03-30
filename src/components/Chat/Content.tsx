@@ -20,7 +20,7 @@ const Content: React.FC<ContentProps> = ({ chatHistory }) => {
   return (
     <Box
       sx={{
-        height: "calc(100% - 132px)",
+        height: "calc(100% - 8rem)",
         overflowY: "scroll",
         backgroundColor: "#F0F4FA",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",

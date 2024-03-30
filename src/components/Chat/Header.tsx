@@ -35,7 +35,7 @@ const Header: React.FC = () => {
     <Box
       p={1}
       sx={{
-        height: "50px",
+        height: "3rem",
         backgroundColor: "#F8FAFF",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
