@@ -84,8 +84,7 @@ const Chats: React.FC = () => {
     <Box
       p={2}
       sx={{
-        height: "100%",
-        width: "400px",
+        width: 350,
         backgroundColor: "#F8FAFF",
         boxShadow: "0px 0px 2px rgba(0, 0, 0, 0.25)",
       }}
@@ -94,7 +93,7 @@ const Chats: React.FC = () => {
         <Typography variant="h5" sx={{ color: "#676667" }} mb={2} pt={3}>
           History
         </Typography>
-        <Box pr={2} sx={{ overflow: "scroll", height: "100%" }}>
+        <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>
           {ChatList.map((el, idx) => {
             return <ChatElement key={idx} {...el} />;
           })}

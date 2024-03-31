@@ -8,8 +8,7 @@ import getAnswer from "../../api/educationAPI/services/educationService";
 
 // We use the next array to pass instructions to OPENAI
 const Instructions: string[] = [
-  "Answer should be embedded in html tags.",
-  "If there is a formula, format it in Latex.",
+  "You respond completely in valid HTML. If there is a formula, format it in Latex.",
 ];
 
 const Context: Message[] = [];
