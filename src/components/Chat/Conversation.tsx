@@ -8,7 +8,7 @@ import getAnswer from "../../api/educationAPI/services/educationService";
 
 // We use the next array to pass instructions to OPENAI
 const Instructions: string[] = [
-  "You respond completely in valid HTML. Return all the content within the <body> tags. If there is a formula, format it in Latex.",
+  "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
 
 const Context: Message[] = [];
@@ -56,7 +56,6 @@ const ChatComponent: React.FC = () => {
         incoming: true,
         outgoing: false,
       };
-      console.log(response);
       // Show the question to the chat
       setChatHistory([...chatHistory, question, answer]);
 

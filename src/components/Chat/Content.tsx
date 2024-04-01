@@ -10,7 +10,11 @@ const Content: React.FC<ContentProps> = ({ chatHistory }) => {
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
   };
 
   useEffect(() => {
@@ -30,8 +34,8 @@ const Content: React.FC<ContentProps> = ({ chatHistory }) => {
         {chatHistory.map((el, idx) => {
           return <MessageComponent key={idx} el={el} />;
         })}
-        <div ref={messagesEndRef} />
       </Stack>
+      <div ref={messagesEndRef}></div>
     </Box>
   );
 };
