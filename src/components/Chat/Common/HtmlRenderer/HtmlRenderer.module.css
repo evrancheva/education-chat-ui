@@ -6,11 +6,10 @@
   em {
     font-style: normal;
   }
-  h {
-    margin: 0;
-  }
+  h,
   h1,
   h2 {
     font-size: 1rem;
+    margin: 0;
   }
 }

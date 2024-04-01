@@ -30,8 +30,8 @@ const Content: React.FC<ContentProps> = ({ chatHistory }) => {
         {chatHistory.map((el, idx) => {
           return <MessageComponent key={idx} el={el} />;
         })}
+        <div ref={messagesEndRef} />
       </Stack>
-      <div ref={messagesEndRef} />
     </Box>
   );
 };
