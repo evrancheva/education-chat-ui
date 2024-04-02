@@ -30,6 +30,20 @@ const ChatComponent: React.FC = () => {
     Context.push(message);
   };
 
+  async function getResponseToQuestion(
+    Instructions: string[],
+    Context: Message[]
+  ): Promise<string | null> {
+    let response: string | null;
+    try {
+      response = await getAnswer(Instructions, Context);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      response = null;
+    }
+    return response;
+  }
+
   // Function to handle the question
   const handleQuestion = async (q: string): Promise<void> => {
     if (!q) return;
@@ -47,7 +61,7 @@ const ChatComponent: React.FC = () => {
     // Add the question to the context that is passed to OPEN AI
     addToContext(question);
 
-    const response: string = await getAnswer(Instructions, Context);
+    const response = await getResponseToQuestion(Instructions, Context);
 
     if (response) {
       const answer: Message = {

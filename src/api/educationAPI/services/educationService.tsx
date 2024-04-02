@@ -9,15 +9,20 @@ const getAnswer = async (
   passedInstructions: string[],
   messageHistory: Message[]
 ): Promise<string> => {
-  const instructions = mapInstructions(passedInstructions);
-  const messages = mapMessages(messageHistory);
-  const context = instructions.concat(messages);
+  try {
+    const instructions = mapInstructions(passedInstructions);
+    const messages = mapMessages(messageHistory);
+    const context = instructions.concat(messages);
 
-  const endpoint = `${EDUCATION_API_URL}/ask`;
-  const body = JSON.stringify(context);
+    const endpoint = `${EDUCATION_API_URL}/ask`;
+    const body = JSON.stringify(context);
 
-  const answer = getPostData(endpoint, body);
-  return answer;
+    const answer = getPostData(endpoint, body);
+    return answer;
+  } catch (error) {
+    console.error("An error occurred:", error);
+    throw error;
+  }
 };
 
 export default getAnswer;
