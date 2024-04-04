@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import ChatComponent from "../../components/Chat/Conversation";
-import Chats from "../../components/History/History";
+import Chats from "../../components/Chats/Chats";
 import useResponsive from "../../utils/useResponsive";
 import InitialScreen from "../../components/Chat/InitialScreen";
 
