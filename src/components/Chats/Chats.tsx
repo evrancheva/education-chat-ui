@@ -3,55 +3,31 @@ import { Box, Stack, Typography, IconButton } from "@mui/material";
 import useLocalStorage from "../../utils/useLocalStore";
 import { ChatItem as ChatItemType } from "./types";
 import { PlusCircle } from "phosphor-react";
-import FormModal from "./FormDialog";
+import FormDialog from "./FormDialog";
 import { useState } from "react";
 import ChatItem from "./ChatItem";
-import { useSearchParams } from "react-router-dom";
 
 const Chats: React.FC = () => {
-  const ChatItems: ChatItemType[] = [];
-
-  function getCurrentTime(): string {
-    const now = new Date();
-
-    return now.toLocaleTimeString("en-US", {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }
-
-  const [storedChatItems, setStoredChatItems] = useLocalStorage(
-    "ChatItems",
-    ChatItems
-  );
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const openDialog = () => {
     setIsDialogOpen(true);
   };
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const ChatItems: ChatItemType[] = [];
 
-  const addNewChatItem = (formData: FormData): void => {
-    const id = 17;
-    const newChatItem: ChatItemType = {
-      id: id,
-      name: formData.get("name")?.toString(),
-      description: formData.get("description")?.toString(),
-      instructions: formData.get("instructions")?.toString(),
-      time: getCurrentTime(),
-    };
+  const [storedChatItems, setStoredChatItems] = useLocalStorage(
+    "ChatItems",
+    ChatItems
+  );
 
-    // Retrieve the existing history items from local storage
-    const updatedChatItems = [newChatItem, ...storedChatItems];
+  const reloadItems = () => {
+    const chatItems = localStorage.getItem("ChatItems");
+    const currentChatItems: ChatItemType[] = chatItems
+      ? JSON.parse(chatItems)
+      : [];
 
-    // Update the local storage with the new array including the new chat item
-    setStoredChatItems(updatedChatItems);
-
-    searchParams.set("id", id.toString());
-    setSearchParams(searchParams);
+    setStoredChatItems(currentChatItems);
   };
 
   return (
@@ -81,10 +57,11 @@ const Chats: React.FC = () => {
           >
             <PlusCircle />
           </IconButton>
-          <FormModal
+          <FormDialog
             isOpen={isDialogOpen}
+            isEdit={false}
             onClose={() => setIsDialogOpen(false)}
-            addNewChatItem={addNewChatItem}
+            reloadItems={reloadItems}
           />
         </Typography>
         <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>

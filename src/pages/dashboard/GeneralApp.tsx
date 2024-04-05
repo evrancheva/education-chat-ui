@@ -8,7 +8,6 @@ import InitialScreen from "../../components/Chat/InitialScreen";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
-
   const [searchParams] = useSearchParams();
 
   return (

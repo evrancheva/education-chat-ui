@@ -1,10 +1,18 @@
-import { Stack, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Stack, Typography, Button } from "@mui/material";
 import NoChat from "../../assets/Illustration/NoChat";
-import { useTheme } from "@mui/material/styles";
+import FormDialog from "../Chats/FormDialog";
+import { useState } from "react";
 
 const InitialScreen: React.FC = () => {
-  const theme = useTheme();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const openDialog = () => {
+    setIsDialogOpen(true);
+  };
+  const reloadItems = () => {
+    console.log("hi");
+  };
+
   return (
     <Stack
       spacing={2}
@@ -15,17 +23,16 @@ const InitialScreen: React.FC = () => {
       <NoChat />
       <Typography variant="subtitle2">
         Select a conversation or start a{" "}
-        <Link
-          style={{
-            color: theme.palette.primary.main,
-            textDecoration: "none",
-          }}
-          /* To be improved later */
-          to="/chat?id=0"
-        >
-          new one
-        </Link>
       </Typography>
+      <Button onClick={openDialog} variant="contained">
+        new one
+      </Button>
+      <FormDialog
+        isOpen={isDialogOpen}
+        isEdit={false}
+        onClose={() => setIsDialogOpen(false)}
+        reloadItems={reloadItems}
+      />
     </Stack>
   );
 };
