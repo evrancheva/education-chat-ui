@@ -1,33 +1,17 @@
 import React from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
-import useLocalStorage from "../../utils/useLocalStore";
 import { ChatItem as ChatItemType } from "./types";
 import { PlusCircle } from "phosphor-react";
-import FormDialog from "./FormDialog";
-import { useState } from "react";
 import ChatItem from "./ChatItem";
 
-const Chats: React.FC = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+interface Props {
+  isDialogOpen: (isOpen: boolean) => void;
+  chats: ChatItemType[];
+}
 
+const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
   const openDialog = () => {
-    setIsDialogOpen(true);
-  };
-
-  const ChatItems: ChatItemType[] = [];
-
-  const [storedChatItems, setStoredChatItems] = useLocalStorage(
-    "ChatItems",
-    ChatItems
-  );
-
-  const reloadItems = () => {
-    const chatItems = localStorage.getItem("ChatItems");
-    const currentChatItems: ChatItemType[] = chatItems
-      ? JSON.parse(chatItems)
-      : [];
-
-    setStoredChatItems(currentChatItems);
+    isDialogOpen(true);
   };
 
   return (
@@ -57,15 +41,9 @@ const Chats: React.FC = () => {
           >
             <PlusCircle />
           </IconButton>
-          <FormDialog
-            isOpen={isDialogOpen}
-            isEdit={false}
-            onClose={() => setIsDialogOpen(false)}
-            reloadItems={reloadItems}
-          />
         </Typography>
         <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>
-          {storedChatItems.map((el, idx) => {
+          {chats.map((el, idx) => {
             return <ChatItem key={idx} chatItem={el} />;
           })}
         </Box>

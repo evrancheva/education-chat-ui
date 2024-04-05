@@ -1,16 +1,13 @@
 import { Stack, Typography, Button } from "@mui/material";
 import NoChat from "../../assets/Illustration/NoChat";
-import FormDialog from "../Chats/FormDialog";
-import { useState } from "react";
 
-const InitialScreen: React.FC = () => {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+interface Props {
+  isDialogOpen: (isOpen: boolean) => void;
+}
 
+const InitialScreen: React.FC<Props> = ({ isDialogOpen }) => {
   const openDialog = () => {
-    setIsDialogOpen(true);
-  };
-  const reloadItems = () => {
-    console.log("hi");
+    isDialogOpen(true);
   };
 
   return (
@@ -27,12 +24,6 @@ const InitialScreen: React.FC = () => {
       <Button onClick={openDialog} variant="contained">
         new one
       </Button>
-      <FormDialog
-        isOpen={isDialogOpen}
-        isEdit={false}
-        onClose={() => setIsDialogOpen(false)}
-        reloadItems={reloadItems}
-      />
     </Stack>
   );
 };

@@ -1,16 +1,18 @@
 import React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import {
+  Button,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import { ChatItem } from "./types";
-import useLocalStorage from "../../utils/useLocalStore";
+import { ChatItem } from "../../Chats/types";
+import useLocalStorage from "../../../utils/useLocalStore";
 import { useEffect } from "react";
-import { getCurrentTime } from "../../utils/timeUtils";
+import { getCurrentTime } from "../../../utils/timeUtils";
 
 interface FormDialogProps {
   isOpen: boolean;
