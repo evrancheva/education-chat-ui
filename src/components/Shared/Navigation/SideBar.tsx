@@ -1,6 +1,6 @@
 import { Box, IconButton, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Logo from "../../assets/Images/logo.ico";
+import Logo from "../../../assets/Images/logo.ico";
 import { ChatCircleDots } from "phosphor-react";
 
 const SideBar: React.FC = () => {
