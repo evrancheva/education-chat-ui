@@ -10,10 +10,10 @@ import {
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { ChatItem } from "../../Chats/types";
-import useLocalStorage from "../../../utils/useLocalStore";
+import useLocalStorage from "../../../hooks/useLocalStore";
 import { useEffect } from "react";
 import { getCurrentTime } from "../../../utils/timeUtils";
-import { getAllChats } from "../../../data/chatRepository";
+import { getAllChats } from "../../../database/chatRepository";
 import { generateUniqueId } from "../../../utils/idUtils";
 
 interface FormDialogProps {

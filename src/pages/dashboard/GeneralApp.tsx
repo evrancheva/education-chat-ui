@@ -3,13 +3,13 @@ import { Box, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import ChatComponent from "../../components/Chat/Conversation";
 import Chats from "../../components/Chats/Chats";
-import useResponsive from "../../utils/useResponsive";
+import useResponsive from "../../hooks/useResponsive";
 import InitialScreen from "../../components/Chat/InitialScreen";
 import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
 import { ChatItem } from "../../components/Chats/types";
-import useLocalStorage from "../../utils/useLocalStore";
-import { getAllChats } from "../../data/chatRepository";
+import useLocalStorage from "../../hooks/useLocalStore";
+import { getAllChats } from "../../database/chatRepository";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");

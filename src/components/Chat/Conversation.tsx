@@ -7,7 +7,7 @@ import Content from "./Content";
 import getAnswer from "../../api/educationAPI/services/educationService";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { getChatById } from "../../data/chatRepository";
+import { getChatById } from "../../database/chatRepository";
 
 // We use the next array to pass SystemInstructions to OPENAI
 const SystemInstructions: string[] = [

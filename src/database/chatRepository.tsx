@@ -5,6 +5,7 @@ export function getAllChats(): ChatItem[] {
   const localStorageData: string | null = localStorage.getItem("ChatItems");
   let parsedData: ChatItem[] = [];
 
+  console.log(localStorageData);
   try {
     if (localStorageData) {
       parsedData = JSON.parse(localStorageData);
@@ -18,6 +19,6 @@ export function getAllChats(): ChatItem[] {
 
 export function getChatById(id: number): ChatItem | undefined {
   const allChats = getAllChats();
-  console.log("CURRENT cHATS", allChats);
-  return allChats.find((chat) => chat.id === id);
+  const result = allChats.find((chat) => chat.id === id);
+  return result;
 }
