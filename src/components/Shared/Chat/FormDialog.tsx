@@ -21,7 +21,6 @@ interface FormDialogProps {
   isEdit: boolean;
   onClose: () => void;
   reloadItems: () => void;
-  refreshChat: (id: number) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
@@ -29,7 +28,6 @@ const FormDialog: React.FC<FormDialogProps> = ({
   isEdit,
   reloadItems,
   onClose,
-  refreshChat,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentChats = getAllChats();
@@ -57,7 +55,6 @@ const FormDialog: React.FC<FormDialogProps> = ({
     // TO DO: When a real DB is introduced, replace the next method
     setStoredChatItems(updatedChatItems);
 
-    refreshChat(uniqueId);
     searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };
