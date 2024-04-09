@@ -13,12 +13,15 @@ import { ChatItem } from "../../Chats/types";
 import useLocalStorage from "../../../utils/useLocalStore";
 import { useEffect } from "react";
 import { getCurrentTime } from "../../../utils/timeUtils";
+import { getAllChats } from "../../../data/chatRepository";
+import { generateUniqueId } from "../../../utils/idUtils";
 
 interface FormDialogProps {
   isOpen: boolean;
   isEdit: boolean;
   onClose: () => void;
   reloadItems: () => void;
+  refreshChat: (id: number) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
@@ -26,21 +29,23 @@ const FormDialog: React.FC<FormDialogProps> = ({
   isEdit,
   reloadItems,
   onClose,
+  refreshChat,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const chatItems = localStorage.getItem("ChatItems");
-  const currentChatItems: ChatItem[] = chatItems ? JSON.parse(chatItems) : [];
+  const currentChats = getAllChats();
 
   const [storedChatItems, setStoredChatItems] = useLocalStorage(
     "ChatItems",
-    currentChatItems
+    currentChats
   );
 
   const onSubmit = (formData: FormData): void => {
-    const id = 20;
+    // For now we can create a random id, but when we have a real db,
+    // let's make sure that we are not creating it here
+    const uniqueId = generateUniqueId();
+
     const newChatItem: ChatItem = {
-      id: id,
+      id: uniqueId,
       name: formData.get("name")?.toString(),
       description: formData.get("description")?.toString(),
       instructions: formData.get("instructions")?.toString(),
@@ -49,9 +54,11 @@ const FormDialog: React.FC<FormDialogProps> = ({
 
     const updatedChatItems = [newChatItem, ...storedChatItems];
     // Update the local storage with the new array including the new chat item
+    // TO DO: When a real DB is introduced, replace the next method
     setStoredChatItems(updatedChatItems);
 
-    searchParams.set("id", id.toString());
+    refreshChat(uniqueId);
+    searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };
 

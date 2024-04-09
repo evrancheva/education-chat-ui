@@ -9,12 +9,13 @@ import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
 import { ChatItem } from "../../components/Chats/types";
 import useLocalStorage from "../../utils/useLocalStore";
+import { getAllChats, getChatById } from "../../data/chatRepository";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams] = useSearchParams();
-
   const [isOpen, setIsOpen] = useState(false);
+  //const [currentChat, setCurrentChat] = useState<ChatItem | null>(null);
 
   const isDialogOpen = (isOpen: boolean) => {
     setIsOpen(isOpen);
@@ -28,10 +29,13 @@ const GeneralApp: React.FC = () => {
   );
 
   const reloadItems = () => {
-    const chatItems = localStorage.getItem("ChatItems");
-    const currentChatItems: ChatItem[] = chatItems ? JSON.parse(chatItems) : [];
+    const chatItems = getAllChats();
+    setStoredChatItems(chatItems);
+  };
 
-    setStoredChatItems(currentChatItems);
+  const refreshChat = (id: number) => {
+    const chat = getChatById(id) ?? null;
+    //setCurrentChat(chat);
   };
 
   return (
@@ -58,6 +62,7 @@ const GeneralApp: React.FC = () => {
           isEdit={false}
           onClose={() => setIsOpen(false)}
           reloadItems={reloadItems}
+          refreshChat={refreshChat}
         />
       </Stack>
     </>

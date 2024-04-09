@@ -6,13 +6,15 @@ import getPostData from "../../common/apiService";
 const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
 
 const getAnswer = async (
-  passedInstructions: string[],
+  SystemInstructions: string[],
+  AdminDefinedInstructions: string[],
   messageHistory: Message[]
 ): Promise<string> => {
   try {
-    const instructions = mapInstructions(passedInstructions);
+    const systemInstructions = mapInstructions(SystemInstructions);
+    const adminInstructions = mapInstructions(AdminDefinedInstructions);
     const messages = mapMessages(messageHistory);
-    const context = instructions.concat(messages);
+    const context = [...systemInstructions, ...adminInstructions, ...messages];
 
     const endpoint = `${EDUCATION_API_URL}/ask`;
     const body = JSON.stringify(context);
