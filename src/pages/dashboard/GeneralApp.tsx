@@ -1,35 +1,36 @@
 import React from "react";
 import { Box, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import ChatComponent from "../../components/Chat/Conversation";
+import Conversation from "../../components/Chat/Conversation";
 import Chats from "../../components/Chats/Chats";
 import useResponsive from "../../hooks/useResponsive";
 import InitialScreen from "../../components/Chat/InitialScreen";
 import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
-import { ChatItem } from "../../components/Chats/types";
 import useLocalStorage from "../../hooks/useLocalStore";
 import { getAllChats } from "../../database/chatRepository";
+import { ChatItem } from "../../components/Chats/types";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams] = useSearchParams();
+  const chatIdString = searchParams.get("id");
+  let chatId = chatIdString ? parseInt(chatIdString) : null;
+
   const [isOpen, setIsOpen] = useState(false);
 
   const isDialogOpen = (isOpen: boolean) => {
     setIsOpen(isOpen);
   };
 
-  const ChatItems: ChatItem[] = [];
-
   const [storedChatItems, setStoredChatItems] = useLocalStorage(
     "ChatItems",
-    ChatItems
+    getAllChats()
   );
 
-  const reloadItems = () => {
-    const chatItems = getAllChats();
-    setStoredChatItems(chatItems);
+  const reloadChats = (newChat: ChatItem) => {
+    chatId = newChat.id;
+    setStoredChatItems([newChat, ...storedChatItems]);
   };
 
   return (
@@ -46,7 +47,7 @@ const GeneralApp: React.FC = () => {
           }}
         >
           {searchParams.get("id") ? (
-            <ChatComponent />
+            <Conversation id={chatId} />
           ) : (
             <InitialScreen isDialogOpen={isDialogOpen} />
           )}
@@ -55,7 +56,7 @@ const GeneralApp: React.FC = () => {
           isOpen={isOpen}
           isEdit={false}
           onClose={() => setIsOpen(false)}
-          reloadItems={reloadItems}
+          reloadChats={reloadChats}
         />
       </Stack>
     </>

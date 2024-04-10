@@ -5,9 +5,12 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
 import getAnswer from "../../api/educationAPI/services/educationService";
-import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getChatById } from "../../database/chatRepository";
+
+interface Props {
+  id: number;
+}
 
 // We use the next array to pass SystemInstructions to OPENAI
 const SystemInstructions: string[] = [
@@ -21,51 +24,36 @@ const InitialHelloMessage: Message = {
   outgoing: false,
 };
 
-const Context: Message[] = [];
-
-const ChatComponent: React.FC = () => {
+const Conversation: React.FC<Props> = ({ id }) => {
   // chatHistory array is used for displaying all the messages in the chat
-  let AdminDefinedInstructions: string[] = [];
-
   const [chatHistory, setChatHistory] = useState<Message[]>([
     InitialHelloMessage,
   ]);
 
-  const reseChat = () => {
-    setChatHistory([InitialHelloMessage]);
-  };
+  const [context, setContext] = useState<Message[]>([]);
 
-  const [searchParams] = useSearchParams(); // Get the search parameters
-  const chatId = parseInt(searchParams.get("id") ?? "0");
-
-  const [searchKey, setSearchKey] = useState<number | null>(chatId);
+  const [adminInstructions, setAdminInstructions] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log(searchKey);
-    reseChat();
-    const currentChat = getChatById(chatId);
+    console.log("reloaded", id);
+    setChatHistory([InitialHelloMessage]);
+    setContext([]);
+    setAdminInstructions([]);
+
+    const currentChat = getChatById(id);
     if (currentChat && currentChat.instructions) {
-      AdminDefinedInstructions = [];
-      AdminDefinedInstructions.push(currentChat.instructions);
+      setAdminInstructions([currentChat.instructions]);
     }
-  }, [searchKey]);
+  }, [id]);
 
-  // Function to add a message to Context
-  const addToContext = (message: Message): void => {
-    Context.push(message);
-  };
-
-  async function getResponseToQuestion(
-    SystemInstructions: string[],
-    AdminDefinedInstructions: string[],
-    Context: Message[]
-  ): Promise<string | null> {
+  async function getResponseToQuestion(): Promise<string | null> {
     let response: string | null;
     try {
+      console.log("adminInstructions", adminInstructions);
       response = await getAnswer(
         SystemInstructions,
-        AdminDefinedInstructions,
-        Context
+        adminInstructions,
+        context ?? []
       );
     } catch (error) {
       console.error("An error occurred:", error);
@@ -89,13 +77,9 @@ const ChatComponent: React.FC = () => {
     setChatHistory([...chatHistory, question]);
 
     // Add the question to the context that is passed to OPEN AI
-    addToContext(question);
+    setContext([...context, question]);
 
-    const response = await getResponseToQuestion(
-      SystemInstructions,
-      AdminDefinedInstructions,
-      Context
-    );
+    const response = await getResponseToQuestion();
 
     if (response) {
       const answer: Message = {
@@ -108,7 +92,7 @@ const ChatComponent: React.FC = () => {
       setChatHistory([...chatHistory, question, answer]);
 
       // Add the answer to the context that is passed to OPEN AI
-      addToContext(answer);
+      setContext([...context, question, answer]);
     }
   };
 
@@ -121,4 +105,4 @@ const ChatComponent: React.FC = () => {
   );
 };
 
-export default ChatComponent;
+export default Conversation;

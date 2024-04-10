@@ -11,7 +11,6 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { ChatItem } from "../../Chats/types";
 import useLocalStorage from "../../../hooks/useLocalStore";
-import { useEffect } from "react";
 import { getCurrentTime } from "../../../utils/timeUtils";
 import { getAllChats } from "../../../database/chatRepository";
 import { generateUniqueId } from "../../../utils/idUtils";
@@ -20,14 +19,14 @@ interface FormDialogProps {
   isOpen: boolean;
   isEdit: boolean;
   onClose: () => void;
-  reloadItems: () => void;
+  reloadChats: (newChat: ChatItem) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
   isOpen,
   isEdit,
-  reloadItems,
   onClose,
+  reloadChats,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentChats = getAllChats();
@@ -51,17 +50,20 @@ const FormDialog: React.FC<FormDialogProps> = ({
     };
 
     const updatedChatItems = [newChatItem, ...storedChatItems];
-    // Update the local storage with the new array including the new chat item
+
+    // 1:  Update the local storage with the new array including the new chat item
     // TO DO: When a real DB is introduced, replace the next method
     setStoredChatItems(updatedChatItems);
 
+    // 2: Reload items in the history bar
+    reloadChats(newChatItem);
+
+    // 3: Update chat id
+
+    // 4: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };
-
-  useEffect(() => {
-    reloadItems();
-  }, [storedChatItems]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

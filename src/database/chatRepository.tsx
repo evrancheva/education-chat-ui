@@ -5,7 +5,6 @@ export function getAllChats(): ChatItem[] {
   const localStorageData: string | null = localStorage.getItem("ChatItems");
   let parsedData: ChatItem[] = [];
 
-  console.log(localStorageData);
   try {
     if (localStorageData) {
       parsedData = JSON.parse(localStorageData);
