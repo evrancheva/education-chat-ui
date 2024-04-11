@@ -13,6 +13,8 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
+
   const openDialog = () => {
     isDialogOpen(true);
   };
@@ -57,7 +59,7 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
             sx={{ width: "max-content", color: "#1976d2", ml: "auto" }}
             onClick={openDialog}
           >
-            <PlusCircle />
+            {isAdmin ? <PlusCircle /> : null}
           </IconButton>
         </Typography>
         <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>

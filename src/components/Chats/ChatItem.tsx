@@ -4,6 +4,7 @@ import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import { ChatItem as ChatItemType } from "./types";
 import { X } from "phosphor-react";
+import useLocalStorage from "../../hooks/useLocalStore";
 
 interface Props {
   chatItem: ChatItemType;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedHistoryElementId = searchParams.get("id") ?? "0";
@@ -63,15 +65,18 @@ const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
             {chatItem.time}
-            <IconButton
-              sx={{
-                color: "#1976d2",
-                ml: 1,
-              }}
-              onClick={deleteChat}
-            >
-              <X size={16} />
-            </IconButton>
+
+            {isAdmin ? (
+              <IconButton
+                sx={{
+                  color: "#1976d2",
+                  ml: 1,
+                }}
+                onClick={deleteChat}
+              >
+                <X size={16} />
+              </IconButton>
+            ) : null}
           </Typography>
         </Stack>
       </Stack>
