@@ -17,7 +17,6 @@ const SystemDefinedChatIntructions: string[] = [
   "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
 let ConversationContext: Message[] = [];
-let UserDefinedChatInstructions: string[] = [];
 
 const InitialHelloMessage: Message = {
   type: "msg",
@@ -31,15 +30,17 @@ const Conversation: React.FC<Props> = ({ id }) => {
   const [chatHistory, setChatHistory] = useState<Message[]>([
     InitialHelloMessage,
   ]);
+  const [userDefinedChatInstructions, setUserDefinedChatInstructions] =
+    useState<string[]>([]);
 
   useEffect(() => {
     ConversationContext = [];
-    UserDefinedChatInstructions = [];
+    setUserDefinedChatInstructions([]);
     setChatHistory([InitialHelloMessage]);
 
     const currentChat = getChatById(id);
     if (currentChat && currentChat.instructions) {
-      UserDefinedChatInstructions = [currentChat.instructions];
+      setUserDefinedChatInstructions([currentChat.instructions]);
     }
   }, [id]);
 
@@ -50,7 +51,7 @@ const Conversation: React.FC<Props> = ({ id }) => {
     try {
       response = await getAnswer(
         SystemDefinedChatIntructions,
-        UserDefinedChatInstructions,
+        userDefinedChatInstructions,
         ConversationContext
       );
     } catch (error) {
