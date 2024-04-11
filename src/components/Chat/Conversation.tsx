@@ -12,17 +12,12 @@ interface Props {
   id: number;
 }
 
-// We use the next array to pass SystemInstructions to OPENAI
-const SystemInstructions: string[] = [
+// We use the next array to pass SystemDefinedChatIntructions to OPENAI
+const SystemDefinedChatIntructions: string[] = [
   "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
-
-let Context: Message[] = [];
-
-// Function to add a message to Context
-const addToContext = (message: Message): void => {
-  Context.push(message);
-};
+let ConversationContext: Message[] = [];
+let UserDefinedChatInstructions: string[] = [];
 
 const InitialHelloMessage: Message = {
   type: "msg",
@@ -37,28 +32,26 @@ const Conversation: React.FC<Props> = ({ id }) => {
     InitialHelloMessage,
   ]);
 
-  const [adminInstructions, setAdminInstructions] = useState<string[]>([]);
-
   useEffect(() => {
-    Context = [];
+    ConversationContext = [];
+    UserDefinedChatInstructions = [];
     setChatHistory([InitialHelloMessage]);
-    setAdminInstructions([]);
 
     const currentChat = getChatById(id);
     if (currentChat && currentChat.instructions) {
-      setAdminInstructions([currentChat.instructions]);
+      UserDefinedChatInstructions = [currentChat.instructions];
     }
   }, [id]);
 
   async function getResponseToQuestion(
-    context: Message[]
+    ConversationContext: Message[]
   ): Promise<string | null> {
     let response: string | null;
     try {
       response = await getAnswer(
-        SystemInstructions,
-        adminInstructions,
-        context
+        SystemDefinedChatIntructions,
+        UserDefinedChatInstructions,
+        ConversationContext
       );
     } catch (error) {
       console.error("An error occurred:", error);
@@ -82,11 +75,11 @@ const Conversation: React.FC<Props> = ({ id }) => {
     const updatedHistory = [...chatHistory, question];
     setChatHistory(updatedHistory);
 
-    // Add the question to the context that is passed to OPEN AI
-    addToContext(question);
+    // Add the question to the ConversationContext that is passed to OPEN AI
+    ConversationContext.push(question);
 
     try {
-      const response = await getResponseToQuestion(Context);
+      const response = await getResponseToQuestion(ConversationContext);
 
       if (response) {
         const answer: Message = {
@@ -99,7 +92,7 @@ const Conversation: React.FC<Props> = ({ id }) => {
         const updatedHistoryWithAnswer = [...updatedHistory, answer];
         setChatHistory(updatedHistoryWithAnswer);
 
-        addToContext(answer);
+        ConversationContext.push(answer);
       }
     } catch (error) {
       console.error("Error fetching response:", error);
