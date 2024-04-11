@@ -49,10 +49,9 @@ const FormDialog: React.FC<FormDialogProps> = ({
       time: getCurrentTime(),
     };
 
-    const updatedChatItems = [newChatItem, ...storedChatItems];
-
     // 1:  Update the local storage with the new array including the new chat item
     // TO DO: When a real DB is introduced, replace the next method
+    const updatedChatItems = [newChatItem, ...storedChatItems];
     setStoredChatItems(updatedChatItems);
 
     // 2: Reload items in the history bar

@@ -35,8 +35,8 @@ const GeneralApp: React.FC = () => {
   );
 
   const reloadChats = (newChat: ChatItem) => {
-    setChatId(newChat.id);
     setStoredChatItems([newChat, ...storedChatItems]);
+    setChatId(newChat.id);
   };
 
   return (
