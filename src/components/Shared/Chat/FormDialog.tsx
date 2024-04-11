@@ -10,31 +10,21 @@ import {
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { ChatItem } from "../../Chats/types";
-import useLocalStorage from "../../../hooks/useLocalStore";
 import { getCurrentTime } from "../../../utils/timeUtils";
-import { getAllChats } from "../../../database/chatRepository";
 import { generateUniqueId } from "../../../utils/idUtils";
 
 interface FormDialogProps {
   isOpen: boolean;
-  isEdit: boolean;
   onClose: () => void;
   reloadChats: (newChat: ChatItem) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
   isOpen,
-  isEdit,
   onClose,
   reloadChats,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentChats = getAllChats();
-
-  const [storedChatItems, setStoredChatItems] = useLocalStorage(
-    "ChatItems",
-    currentChats
-  );
 
   const onSubmit = (formData: FormData): void => {
     // For now we can create a random id, but when we have a real db,
@@ -49,15 +39,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
       time: getCurrentTime(),
     };
 
-    // 1:  Update the local storage with the new array including the new chat item
-    // TO DO: When a real DB is introduced, replace the next method
-    const updatedChatItems = [newChatItem, ...storedChatItems];
-    setStoredChatItems(updatedChatItems);
-
-    // 2: Reload items in the history bar
+    // 1: Reload items in the history bar
     reloadChats(newChatItem);
 
-    // 3: Update the chat id in the url
+    // 2: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };
