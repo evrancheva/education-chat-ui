@@ -1,14 +1,16 @@
 import React from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, IconButton } from "@mui/material";
 import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import { ChatItem as ChatItemType } from "./types";
+import { X } from "phosphor-react";
 
 interface Props {
   chatItem: ChatItemType;
+  removeChat: (id: number) => void;
 }
 
-const ChatItem: React.FC<Props> = ({ chatItem }) => {
+const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedHistoryElementId = searchParams.get("id") ?? "0";
@@ -30,6 +32,10 @@ const ChatItem: React.FC<Props> = ({ chatItem }) => {
       cursor: "pointer",
     },
   }));
+
+  const deleteChat = () => {
+    removeChat(chatItem.id);
+  };
 
   return (
     <StyledHistoryElementBox
@@ -57,6 +63,15 @@ const ChatItem: React.FC<Props> = ({ chatItem }) => {
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
             {chatItem.time}
+            <IconButton
+              sx={{
+                color: "#1976d2",
+                ml: 1,
+              }}
+              onClick={deleteChat}
+            >
+              <X size={16} />
+            </IconButton>
           </Typography>
         </Stack>
       </Stack>
