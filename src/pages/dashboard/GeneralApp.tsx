@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Stack } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import Conversation from "../../components/Chat/Conversation";
@@ -13,11 +13,17 @@ import { ChatItem } from "../../components/Chats/types";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
+
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
-  let chatId = chatIdString ? parseInt(chatIdString) : null;
 
+  const [chatId, setChatId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const id = chatIdString ? parseInt(chatIdString) : 0;
+    setChatId(id);
+  }, [chatIdString]);
 
   const isDialogOpen = (isOpen: boolean) => {
     setIsOpen(isOpen);
@@ -29,7 +35,7 @@ const GeneralApp: React.FC = () => {
   );
 
   const reloadChats = (newChat: ChatItem) => {
-    chatId = newChat.id;
+    setChatId(newChat.id);
     setStoredChatItems([newChat, ...storedChatItems]);
   };
 

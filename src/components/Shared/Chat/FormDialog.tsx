@@ -58,9 +58,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
     // 2: Reload items in the history bar
     reloadChats(newChatItem);
 
-    // 3: Update chat id
-
-    // 4: Update the chat id in the url
+    // 3: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };

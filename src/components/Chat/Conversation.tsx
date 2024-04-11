@@ -17,6 +17,13 @@ const SystemInstructions: string[] = [
   "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
 
+let Context: Message[] = [];
+
+// Function to add a message to Context
+const addToContext = (message: Message): void => {
+  Context.push(message);
+};
+
 const InitialHelloMessage: Message = {
   type: "msg",
   text: "Hi 👋🏻, how can I help you today?",
@@ -30,14 +37,11 @@ const Conversation: React.FC<Props> = ({ id }) => {
     InitialHelloMessage,
   ]);
 
-  const [context, setContext] = useState<Message[]>([]);
-
   const [adminInstructions, setAdminInstructions] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log("reloaded", id);
+    Context = [];
     setChatHistory([InitialHelloMessage]);
-    setContext([]);
     setAdminInstructions([]);
 
     const currentChat = getChatById(id);
@@ -46,14 +50,15 @@ const Conversation: React.FC<Props> = ({ id }) => {
     }
   }, [id]);
 
-  async function getResponseToQuestion(): Promise<string | null> {
+  async function getResponseToQuestion(
+    context: Message[]
+  ): Promise<string | null> {
     let response: string | null;
     try {
-      console.log("adminInstructions", adminInstructions);
       response = await getAnswer(
         SystemInstructions,
         adminInstructions,
-        context ?? []
+        context
       );
     } catch (error) {
       console.error("An error occurred:", error);
@@ -74,25 +79,30 @@ const Conversation: React.FC<Props> = ({ id }) => {
     };
 
     // Show the question to the chat
-    setChatHistory([...chatHistory, question]);
+    const updatedHistory = [...chatHistory, question];
+    setChatHistory(updatedHistory);
 
     // Add the question to the context that is passed to OPEN AI
-    setContext([...context, question]);
+    addToContext(question);
 
-    const response = await getResponseToQuestion();
+    try {
+      const response = await getResponseToQuestion(Context);
 
-    if (response) {
-      const answer: Message = {
-        type: "msg",
-        text: response,
-        incoming: true,
-        outgoing: false,
-      };
-      // Show the question to the chat
-      setChatHistory([...chatHistory, question, answer]);
+      if (response) {
+        const answer: Message = {
+          type: "msg",
+          text: response,
+          incoming: true,
+          outgoing: false,
+        };
 
-      // Add the answer to the context that is passed to OPEN AI
-      setContext([...context, question, answer]);
+        const updatedHistoryWithAnswer = [...updatedHistory, answer];
+        setChatHistory(updatedHistoryWithAnswer);
+
+        addToContext(answer);
+      }
+    } catch (error) {
+      console.error("Error fetching response:", error);
     }
   };
 
