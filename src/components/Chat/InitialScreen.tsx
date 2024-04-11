@@ -1,11 +1,13 @@
 import { Stack, Typography, Button } from "@mui/material";
 import NoChat from "../../assets/Illustration/NoChat";
+import useLocalStorage from "../../hooks/useLocalStore";
 
 interface Props {
   isDialogOpen: (isOpen: boolean) => void;
 }
 
 const InitialScreen: React.FC<Props> = ({ isDialogOpen }) => {
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
   const openDialog = () => {
     isDialogOpen(true);
   };
@@ -18,12 +20,20 @@ const InitialScreen: React.FC<Props> = ({ isDialogOpen }) => {
       justifyContent={"center"}
     >
       <NoChat />
-      <Typography variant="subtitle2">
-        Select a conversation or start a{" "}
-      </Typography>
-      <Button onClick={openDialog} variant="contained">
-        new one
-      </Button>
+      {isAdmin ? (
+        <>
+          <Typography variant="subtitle2">
+            Select a conversation from the menu or create a
+          </Typography>
+          <Button onClick={openDialog} variant="contained">
+            new one
+          </Button>
+        </>
+      ) : (
+        <Typography variant="subtitle2">
+          Select a conversation from the menu
+        </Typography>
+      )}
     </Stack>
   );
 };
