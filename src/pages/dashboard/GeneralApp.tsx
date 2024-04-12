@@ -6,35 +6,29 @@ import useResponsive from "../../hooks/useResponsive";
 import InitialScreen from "../../components/Chat/InitialScreen";
 import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
-import useLocalStorage from "../../hooks/useLocalStore";
 import { ChatItem } from "../../components/Chats/types";
-import { getAllChats } from "../../database/chatRepository";
 import { useSearchParams } from "react-router-dom";
+import useLocalStorage from "../../hooks/useLocalStore";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
+  const id = chatIdString ? parseInt(chatIdString) : 0;
 
   const [chatId, setChatId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentChats, setCurrentChats] = useState(getAllChats());
+
+  // Display the right chats in the history bar
+  const [storedChatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
+  const [currentChats, setCurrentChats] = useState(storedChatItems);
 
   useEffect(() => {
-    const id = chatIdString ? parseInt(chatIdString) : 0;
     setChatId(id);
-  }, [chatIdString]);
-
-  const [storedChatItems, setStoredChatItems] = useLocalStorage(
-    "ChatItems",
-    getAllChats()
-  );
+  }, [id]);
 
   const reloadChats = (newChat: ChatItem) => {
-    setStoredChatItems([newChat, ...storedChatItems]);
-
     setCurrentChats([newChat, ...currentChats]);
-
     setChatId(newChat.id);
   };
 

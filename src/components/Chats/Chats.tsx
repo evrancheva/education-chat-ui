@@ -5,7 +5,7 @@ import { PlusCircle } from "phosphor-react";
 import ChatItem from "./ChatItem";
 import { useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStore";
-import { getAllChats } from "../../database/chatRepository";
+import { useEffect } from "react";
 
 interface Props {
   isDialogOpen: (isOpen: boolean) => void;
@@ -13,6 +13,7 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
+  console.log(chats);
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
 
   const openDialog = () => {
@@ -20,10 +21,15 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
   };
 
   const [currentChats, setCurrentChats] = useState(chats);
-  const [storedChatItems, setStoredChatItems] = useLocalStorage(
+  const [storedChatItems, setStoredChatItems] = useLocalStorage<ChatItemType[]>(
     "ChatItems",
-    getAllChats()
+    []
   );
+
+  // Use useEffect to update currentChats when chats prop changes
+  useEffect(() => {
+    setCurrentChats(chats);
+  }, [chats]);
 
   const removeChat = (id: number) => {
     const updatedChatItems = storedChatItems.filter((chat) => chat.id !== id);

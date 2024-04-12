@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router-dom";
 import { ChatItem } from "../../Chats/types";
 import { getCurrentTime } from "../../../utils/timeUtils";
 import { generateUniqueId } from "../../../utils/idUtils";
+import useLocalStorage from "../../../hooks/useLocalStore";
 
 interface FormDialogProps {
   isOpen: boolean;
@@ -25,6 +26,10 @@ const FormDialog: React.FC<FormDialogProps> = ({
   reloadChats,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [storedChatItems, setStoredChatItems] = useLocalStorage<ChatItem[]>(
+    "ChatItems",
+    []
+  );
 
   const onSubmit = (formData: FormData): void => {
     // For now we can create a random id, but when we have a real db,
@@ -41,6 +46,9 @@ const FormDialog: React.FC<FormDialogProps> = ({
 
     // 1: Reload items in the history bar
     reloadChats(newChatItem);
+
+    // 1: Update the chats in local storage
+    setStoredChatItems([newChatItem, ...storedChatItems]);
 
     // 2: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
