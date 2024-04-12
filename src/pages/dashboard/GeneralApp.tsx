@@ -12,26 +12,32 @@ import useLocalStorage from "../../hooks/useLocalStore";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
+
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
   const chatId = chatIdString ? parseInt(chatIdString) : null;
 
   const [isOpen, setIsOpen] = useState(false);
-  const [dynamicChatId, setDynamicChatId] = useState(chatId);
 
-  // Display the right chats in the history bar
+  // Used for loading the existing chats
   const [storedChatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
   const [currentChats, setCurrentChats] = useState(storedChatItems);
+
+  // Used for opening the right chat when a new chat is added or selected
+  const [currentChat, setCurrentChat] = useState<ChatItem | undefined>();
 
   // On adding a new chat, we need to add it to the history bar
   const addAndOpenNewChat = (newChat: ChatItem) => {
     setCurrentChats([newChat, ...currentChats]);
-    setDynamicChatId(newChat.id);
   };
 
   const isDialogOpen = (isOpen: boolean) => {
     setIsOpen(isOpen);
   };
+
+  useEffect(() => {
+    setCurrentChat(currentChats.find((chat) => chat.id === chatId));
+  }, [chatId, currentChats]);
 
   return (
     <>
@@ -47,7 +53,7 @@ const GeneralApp: React.FC = () => {
           }}
         >
           {chatId ? (
-            <Conversation chatId={dynamicChatId} />
+            <Conversation currentChat={currentChat} />
           ) : (
             <InitialScreen isDialogOpen={isDialogOpen} />
           )}

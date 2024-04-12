@@ -5,12 +5,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
 import getAnswer from "../../api/educationAPI/services/educationService";
-import { useEffect } from "react";
-import useLocalStorage from "../../hooks/useLocalStore";
 import { ChatItem } from "../Chats/types";
+import { useEffect } from "react";
 
 interface Props {
-  chatId: number;
+  currentChat: ChatItem;
 }
 
 // We use the next array to pass SystemDefinedChatIntructions to OPENAI
@@ -26,25 +25,20 @@ const InitialHelloMessage: Message = {
   outgoing: false,
 };
 
-const Conversation: React.FC<Props> = ({ chatId }) => {
+const Conversation: React.FC<Props> = ({ currentChat }) => {
+  ConversationContext = [];
   // chatHistory array is used for displaying all the messages in the chat
   const [chatHistory, setChatHistory] = useState<Message[]>([
     InitialHelloMessage,
   ]);
-  const [userDefinedChatInstructions, setUserDefinedChatInstructions] =
-    useState<string[]>([]);
 
-  const [storedChatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
+  const userDefinedChatInstructions =
+    currentChat && currentChat.instructions ? [currentChat.instructions] : [];
 
   useEffect(() => {
-    const currentChat = storedChatItems.find((chat) => chat.id === chatId);
     ConversationContext = [];
-    setUserDefinedChatInstructions([]);
     setChatHistory([InitialHelloMessage]);
-    if (currentChat && currentChat.instructions) {
-      setUserDefinedChatInstructions([currentChat.instructions]);
-    }
-  }, [chatId]);
+  }, [currentChat]);
 
   async function getResponseToQuestion(
     ConversationContext: Message[]
@@ -64,7 +58,7 @@ const Conversation: React.FC<Props> = ({ chatId }) => {
   }
 
   // Function to handle the question
-  const handleQuestion = async (q: string): Promise<vochatId> => {
+  const handleQuestion = async (q: string): Promise<void> => {
     if (!q) return;
 
     const question: Message = {
