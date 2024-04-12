@@ -14,22 +14,19 @@ const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
-  const id = chatIdString ? parseInt(chatIdString) : 0;
+  const chatId = chatIdString ? parseInt(chatIdString) : null;
 
-  const [chatId, setChatId] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [dynamicChatId, setDynamicChatId] = useState(chatId);
 
   // Display the right chats in the history bar
   const [storedChatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
   const [currentChats, setCurrentChats] = useState(storedChatItems);
 
-  useEffect(() => {
-    setChatId(id);
-  }, [id]);
-
-  const reloadChats = (newChat: ChatItem) => {
+  // On adding a new chat, we need to add it to the history bar
+  const addAndOpenNewChat = (newChat: ChatItem) => {
     setCurrentChats([newChat, ...currentChats]);
-    setChatId(newChat.id);
+    setDynamicChatId(newChat.id);
   };
 
   const isDialogOpen = (isOpen: boolean) => {
@@ -46,11 +43,11 @@ const GeneralApp: React.FC = () => {
           sx={{
             width: "100%",
             backgroundColor: "#FFF",
-            borderBottom: searchParams.get("id") ? "0px" : "6px solid #0162C4",
+            borderBottom: chatId ? "0px" : "6px solid #0162C4",
           }}
         >
-          {searchParams.get("id") ? (
-            <Conversation id={chatId} />
+          {chatId ? (
+            <Conversation chatId={dynamicChatId} />
           ) : (
             <InitialScreen isDialogOpen={isDialogOpen} />
           )}
@@ -58,7 +55,7 @@ const GeneralApp: React.FC = () => {
         <FormDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          reloadChats={reloadChats}
+          addAndOpenNewChat={addAndOpenNewChat}
         />
       </Stack>
     </>

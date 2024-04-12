@@ -17,13 +17,13 @@ import useLocalStorage from "../../../hooks/useLocalStore";
 interface FormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  reloadChats: (newChat: ChatItem) => void;
+  addAndOpenNewChat: (newChat: ChatItem) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
   isOpen,
   onClose,
-  reloadChats,
+  addAndOpenNewChat,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [storedChatItems, setStoredChatItems] = useLocalStorage<ChatItem[]>(
@@ -44,13 +44,13 @@ const FormDialog: React.FC<FormDialogProps> = ({
       time: getCurrentTime(),
     };
 
-    // 1: Reload items in the history bar
-    reloadChats(newChatItem);
-
     // 1: Update the chats in local storage
     setStoredChatItems([newChatItem, ...storedChatItems]);
 
-    // 2: Update the chat id in the url
+    // 2: Update the history bar + open the new chat
+    addAndOpenNewChat(newChatItem);
+
+    // 3: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
     setSearchParams(searchParams);
   };

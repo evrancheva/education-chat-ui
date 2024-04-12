@@ -22,7 +22,6 @@ export default function MobileNav() {
   const theme = useTheme();
 
   const toggleDrawer = () => {
-    console.log(chatItems);
     setOpen(!open);
   };
 
