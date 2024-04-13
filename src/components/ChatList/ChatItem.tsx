@@ -2,47 +2,43 @@ import React from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
 import { useTheme, styled, alpha } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
-import { ChatItem as ChatItemType } from "./types";
+import type { Chat } from "./types";
 import { X } from "phosphor-react";
 import useLocalStorage from "../../hooks/useLocalStore";
+import { truncateText } from "../../utils/textUtils";
 
 interface Props {
-  chatItem: ChatItemType;
+  chat: Chat;
   removeChat: (id: number) => void;
 }
 
-const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
+const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
+  const theme = useTheme();
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const selectedHistoryElementId = searchParams.get("id") ?? "0";
+  const selectedChatId = searchParams.get("id") ?? "0";
 
-  let isSelected = +selectedHistoryElementId === chatItem.id;
+  let isSelected = +selectedChatId === chat.id;
 
-  if (!selectedHistoryElementId) {
+  if (!selectedChatId) {
     isSelected = false;
   }
 
-  const theme = useTheme();
-
-  const truncateText = (string: string, n: number): string => {
-    return string.length > n ? `${string.slice(0, n)}...` : string;
-  };
-
-  const StyledHistoryElementBox = styled(Box)(() => ({
+  const StyledChatBox = styled(Box)(() => ({
     "&:hover": {
       cursor: "pointer",
     },
   }));
 
   const deleteChat = () => {
-    removeChat(chatItem.id);
+    removeChat(chat.id);
   };
 
   return (
-    <StyledHistoryElementBox
+    <StyledChatBox
       onClick={() => {
-        searchParams.set("id", chatItem.id.toString());
+        searchParams.set("id", chat.id.toString());
         setSearchParams(searchParams);
       }}
       sx={{
@@ -58,13 +54,13 @@ const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
         <Stack direction="row" spacing={2}>
           <Stack spacing={0.3}>
             <Typography variant="subtitle2">
-              {truncateText(chatItem.name, 20)}
+              {truncateText(chat.name, 20)}
             </Typography>
           </Stack>
         </Stack>
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
-            {chatItem.time}
+            {chat.time}
 
             {isAdmin ? (
               <IconButton
@@ -80,7 +76,7 @@ const ChatItem: React.FC<Props> = ({ chatItem, removeChat }) => {
           </Typography>
         </Stack>
       </Stack>
-    </StyledHistoryElementBox>
+    </StyledChatBox>
   );
 };
 

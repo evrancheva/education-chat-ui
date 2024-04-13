@@ -5,11 +5,11 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Content from "./Content";
 import getAnswer from "../../api/educationAPI/services/educationService";
-import { ChatItem } from "../Chats/types";
+import { Chat } from "../ChatList/types";
 import { useEffect } from "react";
 
 interface Props {
-  currentChat: ChatItem;
+  currentChat: Chat;
 }
 
 // We use the next array to pass SystemDefinedChatIntructions to OPENAI

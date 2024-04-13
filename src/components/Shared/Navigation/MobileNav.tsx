@@ -11,14 +11,14 @@ import {
 import { useState } from "react";
 import { List as ListIcon } from "phosphor-react";
 import useLocalStorage from "../../../hooks/useLocalStore";
-import { ChatItem } from "../../Chats/types";
 import { Link } from "react-router-dom";
 import Logo from "../../../assets/Images/logo.ico";
 import { useTheme } from "@mui/material/styles";
+import { Chat } from "../../ChatList/types";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
-  const [chatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
+  const [chats] = useLocalStorage<Chat[]>("ChatItems", []);
   const theme = useTheme();
 
   const toggleDrawer = () => {
@@ -55,7 +55,7 @@ export default function MobileNav() {
           </Box>
         </Link>
         <List>
-          {chatItems.map((el, idx) => {
+          {chats.map((el, idx) => {
             return (
               <Link to="/chat?id={el.id}" style={{ textDecoration: "none" }}>
                 <ListItem>

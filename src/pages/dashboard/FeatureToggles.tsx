@@ -1,5 +1,5 @@
 import React from "react";
-import { Stack, Switch, Typography, Box } from "@mui/material";
+import { Stack, Switch, Typography } from "@mui/material";
 import useLocalStorage from "../../hooks/useLocalStore";
 
 const FeatureToggles: React.FC = () => {

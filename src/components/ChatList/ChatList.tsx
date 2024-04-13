@@ -1,15 +1,15 @@
 import React from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
-import { ChatItem as ChatItemType } from "./types";
 import { PlusCircle } from "phosphor-react";
-import ChatItem from "./ChatItem";
 import { useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStore";
 import { useEffect } from "react";
+import ChatItem from "./ChatItem";
+import type { Chat } from "./types";
 
 interface Props {
   isDialogOpen: (isOpen: boolean) => void;
-  chats: ChatItemType[];
+  chats: Chat[];
 }
 
 const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
@@ -20,7 +20,7 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
   };
 
   const [currentChats, setCurrentChats] = useState(chats);
-  const [storedChatItems, setStoredChatItems] = useLocalStorage<ChatItemType[]>(
+  const [storedChatItems, setStoredChatItems] = useLocalStorage<Chat[]>(
     "ChatItems",
     []
   );
@@ -59,7 +59,7 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
           mb={2}
           pt={3}
         >
-          All Custom Chats
+          All Chats
           <IconButton
             sx={{ width: "max-content", color: "#1976d2", ml: "auto" }}
             onClick={openDialog}
@@ -69,7 +69,7 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
         </Typography>
         <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>
           {currentChats.map((el, idx) => {
-            return <ChatItem key={idx} chatItem={el} removeChat={removeChat} />;
+            return <ChatItem key={idx} chat={el} removeChat={removeChat} />;
           })}
         </Box>
       </Stack>

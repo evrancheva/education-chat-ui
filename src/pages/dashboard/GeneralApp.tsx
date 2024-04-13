@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { Box, Stack } from "@mui/material";
-import Conversation from "../../components/Chat/Conversation";
-import Chats from "../../components/Chats/Chats";
+import Conversation from "../../components/ChatWindow/ChatWindow";
+import Chats from "../../components/ChatList/ChatList";
 import useResponsive from "../../hooks/useResponsive";
-import InitialScreen from "../../components/Chat/InitialScreen";
+import InitialScreen from "../../components/ChatWindow/InitialScreen";
 import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
-import { ChatItem } from "../../components/Chats/types";
+import { Chat } from "../../components/ChatList/types";
 import { useSearchParams } from "react-router-dom";
 import useLocalStorage from "../../hooks/useLocalStore";
 
@@ -20,14 +20,14 @@ const GeneralApp: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   // Used for loading the existing chats
-  const [storedChatItems] = useLocalStorage<ChatItem[]>("ChatItems", []);
+  const [storedChatItems] = useLocalStorage<Chat[]>("ChatItems", []);
   const [currentChats, setCurrentChats] = useState(storedChatItems);
 
   // Used for opening the right chat when a new chat is added or selected
-  const [currentChat, setCurrentChat] = useState<ChatItem | undefined>();
+  const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   // On adding a new chat, we need to add it to the history bar
-  const addAndOpenNewChat = (newChat: ChatItem) => {
+  const addAndOpenNewChat = (newChat: Chat) => {
     setCurrentChats([newChat, ...currentChats]);
   };
 
