@@ -8,16 +8,12 @@ import ChatItem from "./ChatItem";
 import type { Chat } from "./types";
 
 interface Props {
-  isDialogOpen: (isOpen: boolean) => void;
+  setDialogOpen: (isOpen: boolean) => void;
   chats: Chat[];
 }
 
-const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
+const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
-
-  const openDialog = () => {
-    isDialogOpen(true);
-  };
 
   const [currentChats, setCurrentChats] = useState(chats);
   const [storedChats, updateStoredChats] = useLocalStorage<Chat[]>(
@@ -62,7 +58,7 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
           All Chats
           <IconButton
             sx={{ width: "max-content", color: "#1976d2", ml: "auto" }}
-            onClick={openDialog}
+            onClick={() => setDialogOpen(true)}
           >
             {isAdmin ? <PlusCircle /> : null}
           </IconButton>

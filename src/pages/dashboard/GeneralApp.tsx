@@ -12,12 +12,12 @@ import useLocalStorage from "../../hooks/useLocalStore";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
-
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
   const chatId = chatIdString ? parseInt(chatIdString) : null;
 
-  const [isOpen, setIsOpen] = useState(false);
+  // Used for tracking the form dialog
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Used for loading the existing chats
   const [storedChatItems] = useLocalStorage<Chat[]>("ChatItems", []);
@@ -31,10 +31,11 @@ const GeneralApp: React.FC = () => {
     updateCurrentChats([newChat, ...currentChats]);
   };
 
-  const isDialogOpen = (isOpen: boolean) => {
-    setIsOpen(isOpen);
+  const setDialogOpen = (isOpen: boolean) => {
+    setIsDialogOpen(isOpen);
   };
 
+  // This makes sures that the right chat is displayed on update of id search param
   useEffect(() => {
     setCurrentChat(currentChats.find((chat) => chat.id === chatId));
   }, [chatId, currentChats]);
@@ -43,7 +44,7 @@ const GeneralApp: React.FC = () => {
     <>
       <Stack direction="row" sx={{ width: "100%", height: "100vh" }}>
         {!isMobile && (
-          <Chats isDialogOpen={isDialogOpen} chats={currentChats} />
+          <Chats setDialogOpen={setDialogOpen} chats={currentChats} />
         )}
         <Box
           sx={{
@@ -52,15 +53,15 @@ const GeneralApp: React.FC = () => {
             borderBottom: chatId ? "0px" : "6px solid #0162C4",
           }}
         >
-          {chatId ? (
+          {chatId && currentChat ? (
             <Conversation currentChat={currentChat} />
           ) : (
-            <InitialScreen isDialogOpen={isDialogOpen} />
+            <InitialScreen isDialogOpen={setDialogOpen} />
           )}
         </Box>
         <FormDialog
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
+          isOpen={isDialogOpen}
+          onClose={() => setDialogOpen(false)}
           addNewChat={addNewChat}
         />
       </Stack>
