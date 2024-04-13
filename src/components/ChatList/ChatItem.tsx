@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
-import { useTheme, styled, alpha } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useSearchParams } from "react-router-dom";
 import type { Chat } from "./types";
 import { X } from "phosphor-react";
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
-  const theme = useTheme();
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -43,9 +42,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
       }}
       sx={{
         borderRadius: 1,
-        backgroundColor: isSelected
-          ? alpha(theme.palette.primary.main, 0.5)
-          : "#fff",
+        backgroundColor: isSelected ? "#1976d280" : "#fff",
         mb: 2,
       }}
       p={2}

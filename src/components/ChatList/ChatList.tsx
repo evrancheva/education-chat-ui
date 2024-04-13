@@ -20,23 +20,23 @@ const Chats: React.FC<Props> = ({ isDialogOpen, chats }) => {
   };
 
   const [currentChats, setCurrentChats] = useState(chats);
-  const [storedChatItems, setStoredChatItems] = useLocalStorage<Chat[]>(
+  const [storedChats, updateStoredChats] = useLocalStorage<Chat[]>(
     "ChatItems",
     []
   );
 
-  // Use useEffect to update currentChats when chats prop changes
+  // Use useEffect to update the chats in the bar when chats prop changes
   useEffect(() => {
     setCurrentChats(chats);
   }, [chats]);
 
   const removeChat = (id: number) => {
-    const updatedChatItems = storedChatItems.filter((chat) => chat.id !== id);
+    const updatedChatItems = storedChats.filter((chat) => chat.id !== id);
     // Remove it from the list
     setCurrentChats(updatedChatItems);
 
     // Remove it from localStorage
-    setStoredChatItems(updatedChatItems);
+    updateStoredChats(updatedChatItems);
   };
 
   return (

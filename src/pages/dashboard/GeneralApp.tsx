@@ -21,14 +21,14 @@ const GeneralApp: React.FC = () => {
 
   // Used for loading the existing chats
   const [storedChatItems] = useLocalStorage<Chat[]>("ChatItems", []);
-  const [currentChats, setCurrentChats] = useState(storedChatItems);
+  const [currentChats, updateCurrentChats] = useState(storedChatItems);
 
   // Used for opening the right chat when a new chat is added or selected
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   // On adding a new chat, we need to add it to the history bar
-  const addAndOpenNewChat = (newChat: Chat) => {
-    setCurrentChats([newChat, ...currentChats]);
+  const addNewChat = (newChat: Chat) => {
+    updateCurrentChats([newChat, ...currentChats]);
   };
 
   const isDialogOpen = (isOpen: boolean) => {
@@ -61,7 +61,7 @@ const GeneralApp: React.FC = () => {
         <FormDialog
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
-          addAndOpenNewChat={addAndOpenNewChat}
+          addNewChat={addNewChat}
         />
       </Stack>
     </>

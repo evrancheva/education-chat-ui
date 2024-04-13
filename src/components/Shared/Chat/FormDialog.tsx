@@ -9,24 +9,24 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
-import { ChatItem } from "../../Chats/types";
 import { getCurrentTime } from "../../../utils/timeUtils";
 import { generateUniqueId } from "../../../utils/idUtils";
 import useLocalStorage from "../../../hooks/useLocalStore";
+import { Chat } from "../../ChatList/types";
 
 interface FormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  addAndOpenNewChat: (newChat: ChatItem) => void;
+  addNewChat: (newChat: Chat) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
   isOpen,
   onClose,
-  addAndOpenNewChat,
+  addNewChat,
 }) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [storedChatItems, setStoredChatItems] = useLocalStorage<ChatItem[]>(
+  const [storedChats, updateStoredChats] = useLocalStorage<Chat[]>(
     "ChatItems",
     []
   );
@@ -35,20 +35,27 @@ const FormDialog: React.FC<FormDialogProps> = ({
     // For now we can create a random id, but when we have a real db,
     // let's make sure that we are not creating it here
     const uniqueId = generateUniqueId();
+    const name = formData.get("name");
+    const description = formData.get("description");
+    const instructions = formData.get("instructions");
 
-    const newChatItem: ChatItem = {
+    if (name === null) {
+      return; // Exit early if required data is missing
+    }
+
+    const newChat: Chat = {
       id: uniqueId,
-      name: formData.get("name")?.toString(),
-      description: formData.get("description")?.toString(),
-      instructions: formData.get("instructions")?.toString(),
+      name: name.toString(), // Safe to call toString() as name is guaranteed to be non-null
+      description: description?.toString(), // Description and instructions might be null
+      instructions: instructions?.toString(), // Handle potential null values with optional chaining
       time: getCurrentTime(),
     };
 
     // 1: Update the chats in local storage
-    setStoredChatItems([newChatItem, ...storedChatItems]);
+    updateStoredChats([newChat, ...storedChats]);
 
-    // 2: Update the history bar + open the new chat
-    addAndOpenNewChat(newChatItem);
+    // 2: Update the chat list
+    addNewChat(newChat);
 
     // 3: Update the chat id in the url
     searchParams.set("id", uniqueId.toString());
@@ -82,7 +89,6 @@ const FormDialog: React.FC<FormDialogProps> = ({
           />
           <TextField
             autoFocus
-            required
             label="Description"
             name="description"
             multiline
@@ -92,7 +98,6 @@ const FormDialog: React.FC<FormDialogProps> = ({
           />
           <TextField
             autoFocus
-            required
             label="Instructions"
             name="instructions"
             multiline

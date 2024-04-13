@@ -27,10 +27,8 @@ const InitialHelloMessage: Message = {
 
 const Conversation: React.FC<Props> = ({ currentChat }) => {
   ConversationContext = [];
-  // chatHistory array is used for displaying all the messages in the chat
-  const [chatHistory, setChatHistory] = useState<Message[]>([
-    InitialHelloMessage,
-  ]);
+  // chatHistory array is used for displaying all the messages in the chat window
+  const [chatHistory, setChatHistory] = useState<Message[]>([]);
 
   const userDefinedChatInstructions =
     currentChat && currentChat.instructions ? [currentChat.instructions] : [];
