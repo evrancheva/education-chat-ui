@@ -12,12 +12,6 @@ interface Props {
   currentChat: Chat;
 }
 
-// We use the next array to pass SystemDefinedChatIntructions to OPENAI
-const SystemDefinedChatIntructions: string[] = [
-  "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
-];
-let ConversationContext: Message[] = [];
-
 const InitialHelloMessage: Message = {
   type: "msg",
   text: "Hi 👋🏻, how can I help you today?",
@@ -25,28 +19,34 @@ const InitialHelloMessage: Message = {
   outgoing: false,
 };
 
-const Conversation: React.FC<Props> = ({ currentChat }) => {
-  ConversationContext = [];
+// System instructions are instructions passed from our app instructing how OpenAI should behave
+const SystemInstructions: string[] = [
+  "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
+];
+
+const Conversation: Message[] = [];
+
+const ChatWindow: React.FC<Props> = ({ currentChat }) => {
   // chatHistory array is used for displaying all the messages in the chat window
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
 
-  const userDefinedChatInstructions =
+  // Custom instructions are instructions passed from the creator of the chat instructing how OpenAI should behave
+  const CustomInstructions =
     currentChat && currentChat.instructions ? [currentChat.instructions] : [];
 
   useEffect(() => {
-    ConversationContext = [];
     setChatHistory([InitialHelloMessage]);
   }, [currentChat]);
 
   async function getResponseToQuestion(
-    ConversationContext: Message[]
+    Conversation: Message[]
   ): Promise<string | null> {
     let response: string | null;
     try {
       response = await getAnswer(
-        SystemDefinedChatIntructions,
-        userDefinedChatInstructions,
-        ConversationContext
+        SystemInstructions,
+        CustomInstructions,
+        Conversation
       );
     } catch (error) {
       console.error("An error occurred:", error);
@@ -70,11 +70,10 @@ const Conversation: React.FC<Props> = ({ currentChat }) => {
     const updatedHistory = [...chatHistory, question];
     setChatHistory(updatedHistory);
 
-    // Add the question to the ConversationContext that is passed to OPEN AI
-    ConversationContext.push(question);
+    Conversation.push(question);
 
     try {
-      const response = await getResponseToQuestion(ConversationContext);
+      const response = await getResponseToQuestion(Conversation);
 
       if (response) {
         const answer: Message = {
@@ -87,7 +86,7 @@ const Conversation: React.FC<Props> = ({ currentChat }) => {
         const updatedHistoryWithAnswer = [...updatedHistory, answer];
         setChatHistory(updatedHistoryWithAnswer);
 
-        ConversationContext.push(answer);
+        Conversation.push(answer);
       }
     } catch (error) {
       console.error("Error fetching response:", error);
@@ -103,4 +102,4 @@ const Conversation: React.FC<Props> = ({ currentChat }) => {
   );
 };
 
-export default Conversation;
+export default ChatWindow;

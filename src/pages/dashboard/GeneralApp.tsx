@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Stack } from "@mui/material";
-import Conversation from "../../components/ChatWindow/ChatWindow";
+import ChatWindow from "../../components/ChatWindow/ChatWindow";
 import Chats from "../../components/ChatList/ChatList";
 import useResponsive from "../../hooks/useResponsive";
 import InitialScreen from "../../components/ChatWindow/InitialScreen";
@@ -54,7 +54,7 @@ const GeneralApp: React.FC = () => {
           }}
         >
           {chatId && currentChat ? (
-            <Conversation currentChat={currentChat} />
+            <ChatWindow currentChat={currentChat} />
           ) : (
             <InitialScreen isDialogOpen={setDialogOpen} />
           )}

@@ -1,20 +1,24 @@
-import { Message } from "../../../components/Chat/types";
 import { mapInstructions } from "../mappers/instructionsMapper";
 import { mapMessages } from "../mappers/messagesMapper";
 import getPostData from "../../common/apiService";
+import { Message } from "../../../components/ChatWindow/types";
 
 const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
 
 const getAnswer = async (
-  SystemInstructions: string[],
-  AdminDefinedInstructions: string[],
-  messageHistory: Message[]
+  systemInstructions: string[],
+  customInstructions: string[],
+  conversation: Message[]
 ): Promise<string> => {
   try {
-    const systemInstructions = mapInstructions(SystemInstructions);
-    const adminInstructions = mapInstructions(AdminDefinedInstructions);
-    const messages = mapMessages(messageHistory);
-    const context = [...systemInstructions, ...adminInstructions, ...messages];
+    const mappedSystemInstructions = mapInstructions(systemInstructions);
+    const mappedAdminInstructions = mapInstructions(customInstructions);
+    const messages = mapMessages(conversation);
+    const context = [
+      ...mappedSystemInstructions,
+      ...mappedAdminInstructions,
+      ...messages,
+    ];
 
     const endpoint = `${EDUCATION_API_URL}/ask`;
     const body = JSON.stringify(context);
