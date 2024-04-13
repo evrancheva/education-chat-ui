@@ -19,18 +19,19 @@ const InitialHelloMessage: Message = {
   outgoing: false,
 };
 
-// System instructions are instructions passed from our app instructing how OpenAI should behave
+// Used for storing instructions passed from our app instructing how OpenAI should behave
 const SystemInstructions: string[] = [
   "You are a helpful chatbot. You respond completely in valid HTML. Please, return all the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
 
+// Used for storing all the messages that are passed to OpenAI for context
 const Conversation: Message[] = [];
 
 const ChatWindow: React.FC<Props> = ({ currentChat }) => {
-  // chatHistory array is used for displaying all the messages in the chat window
+  // Used for displaying all the messages in the chat window
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
 
-  // Custom instructions are instructions passed from the creator of the chat instructing how OpenAI should behave
+  // Used for storing instructions passed from the creator of the chat instructing how OpenAI should behave
   const CustomInstructions =
     currentChat && currentChat.instructions ? [currentChat.instructions] : [];
 
@@ -66,7 +67,6 @@ const ChatWindow: React.FC<Props> = ({ currentChat }) => {
       outgoing: true,
     };
 
-    // Show the question to the chat
     const updatedHistory = [...chatHistory, question];
     setChatHistory(updatedHistory);
 

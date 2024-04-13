@@ -45,9 +45,9 @@ const FormDialog: React.FC<FormDialogProps> = ({
 
     const newChat: Chat = {
       id: uniqueId,
-      name: name.toString(), // Safe to call toString() as name is guaranteed to be non-null
-      description: description?.toString(), // Description and instructions might be null
-      instructions: instructions?.toString(), // Handle potential null values with optional chaining
+      name: name.toString(),
+      description: description?.toString(),
+      instructions: instructions?.toString(),
       time: getCurrentTime(),
     };
 

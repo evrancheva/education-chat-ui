@@ -21,14 +21,14 @@ const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
     []
   );
 
-  // Use useEffect to update the chats in the bar when chats prop changes
+  // Update the chats in the chat bar when chats prop changes
   useEffect(() => {
     setCurrentChats(chats);
   }, [chats]);
 
   const removeChat = (id: number) => {
     const updatedChatItems = storedChats.filter((chat) => chat.id !== id);
-    // Remove it from the list
+    // Remove it from the chat bar
     setCurrentChats(updatedChatItems);
 
     // Remove it from localStorage

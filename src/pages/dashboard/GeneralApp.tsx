@@ -16,7 +16,6 @@ const GeneralApp: React.FC = () => {
   const chatIdString = searchParams.get("id");
   const chatId = chatIdString ? parseInt(chatIdString) : null;
 
-  // Used for tracking the form dialog
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   // Used for loading the existing chats
@@ -35,7 +34,7 @@ const GeneralApp: React.FC = () => {
     setIsDialogOpen(isOpen);
   };
 
-  // This makes sures that the right chat is displayed on update of id search param
+  // This makes sure that the right chat is displayed on update of id search param
   useEffect(() => {
     setCurrentChat(currentChats.find((chat) => chat.id === chatId));
   }, [chatId, currentChats]);
