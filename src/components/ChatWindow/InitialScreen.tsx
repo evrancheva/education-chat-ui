@@ -23,7 +23,7 @@ const InitialScreen: React.FC<Props> = ({ isDialogOpen }) => {
       {isAdmin ? (
         <>
           <Typography variant="subtitle2">
-            Select a conversation from the menu or create a
+            Select a conversation or create a
           </Typography>
           <Button onClick={openDialog} variant="contained">
             new one

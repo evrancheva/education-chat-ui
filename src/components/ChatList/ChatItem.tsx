@@ -58,7 +58,6 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
             {chat.time}
-
             {isAdmin ? (
               <IconButton
                 sx={{

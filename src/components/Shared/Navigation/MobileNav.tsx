@@ -7,19 +7,18 @@ import {
   List,
   ListItem,
   ListItemText,
+  Typography,
+  Divider,
 } from "@mui/material";
 import { useState } from "react";
 import { List as ListIcon } from "phosphor-react";
 import useLocalStorage from "../../../hooks/useLocalStore";
 import { Link } from "react-router-dom";
-import Logo from "../../../assets/Images/logo.ico";
-import { useTheme } from "@mui/material/styles";
 import { Chat } from "../../ChatList/types";
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
   const [chats] = useLocalStorage<Chat[]>("ChatItems", []);
-  const theme = useTheme();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -27,7 +26,7 @@ export default function MobileNav() {
 
   return (
     <Box>
-      <AppBar sx={{ position: "absolute" }}>
+      <AppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"
@@ -40,24 +39,41 @@ export default function MobileNav() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer anchor="left" open={open} onClose={toggleDrawer}>
-        <Link to="/chat" style={{ textDecoration: "none" }}>
-          <Box
+      <Drawer
+        anchor="left"
+        open={open}
+        onClose={toggleDrawer}
+        PaperProps={{
+          sx: { width: "80%" },
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
             sx={{
-              height: 48,
-              width: 48,
-              borderRadius: 1.5,
-              backgroundColor: theme.palette.primary.main,
+              color: "#676667",
             }}
-            p={1}
+            ml={2}
+            pt={2}
           >
-            <img src={Logo} alt="Tawk" height={48} width={48} />
-          </Box>
-        </Link>
+            All Chats
+          </Typography>
+          <Divider component="li" />
+        </Box>
+
         <List>
           {chats.map((el, idx) => {
             return (
-              <Link to="/chat?id={el.id}" style={{ textDecoration: "none" }}>
+              <Link
+                to={"/chat?id=" + encodeURIComponent(el.id)}
+                style={{ textDecoration: "none" }}
+                onClick={toggleDrawer}
+              >
                 <ListItem>
                   <ListItemText primary={el.name} key={idx} />
                 </ListItem>
