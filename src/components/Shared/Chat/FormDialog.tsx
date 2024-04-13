@@ -86,6 +86,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
             label="Name"
             fullWidth
             variant="standard"
+            sx={{ mb: 2 }}
           />
           <TextField
             autoFocus
@@ -95,6 +96,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
             rows={4}
             variant="standard"
             fullWidth
+            sx={{ mb: 2 }}
           />
           <TextField
             autoFocus
