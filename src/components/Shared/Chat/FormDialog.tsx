@@ -39,7 +39,7 @@ const FormDialog: React.FC<FormDialogProps> = ({
     const description = formData.get("description");
     const instructions = formData.get("instructions");
 
-    if (name === null) {
+    if (name === null || instructions === null) {
       return; // Exit early if required data is missing
     }
 
@@ -93,13 +93,14 @@ const FormDialog: React.FC<FormDialogProps> = ({
             label="Description"
             name="description"
             multiline
-            rows={4}
+            rows={2}
             variant="standard"
             fullWidth
             sx={{ mb: 2 }}
           />
           <TextField
             autoFocus
+            required
             label="Instructions"
             name="instructions"
             multiline

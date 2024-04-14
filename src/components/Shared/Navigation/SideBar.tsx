@@ -21,7 +21,7 @@ const SideBar: React.FC = () => {
         py={3}
         justifyContent="space-between"
       >
-        <Link to="/chat" style={{ textDecoration: "none" }}>
+        <Link to="/chat">
           <Box
             sx={{
               height: 48,
@@ -39,17 +39,19 @@ const SideBar: React.FC = () => {
           direction="column"
           alignItems={"center"}
         >
-          <Box
-            sx={{
-              backgroundColor: theme.palette.primary.main,
-              borderRadius: 1.5,
-            }}
-            p={1}
-          >
-            <IconButton sx={{ width: "max-content", color: "#ffffff" }}>
-              <ChatCircleDots />
-            </IconButton>
-          </Box>
+          <Link to="/chat">
+            <Box
+              sx={{
+                backgroundColor: theme.palette.primary.main,
+                borderRadius: 1.5,
+              }}
+              p={1}
+            >
+              <IconButton sx={{ width: "max-content", color: "#ffffff" }}>
+                <ChatCircleDots />
+              </IconButton>
+            </Box>
+          </Link>
         </Stack>
       </Stack>
     </Box>

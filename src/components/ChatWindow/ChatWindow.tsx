@@ -21,7 +21,7 @@ const InitialHelloMessage: Message = {
 
 // Used for storing instructions passed from our app instructing how OpenAI should behave
 const SystemInstructions: string[] = [
-  "You are a helpful chatbot. You respond completely in valid HTML. But only return all the content within the <body> tags. If there is a formula, format it in Latex.",
+  "You are a helpful chatbot. You respond completely in valid HTML. Return only the content within the <body> tags. If there is a formula, format it in Latex.",
 ];
 
 // Used for storing all the messages that are passed to OpenAI for context

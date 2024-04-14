@@ -14,8 +14,8 @@ export default function Router() {
         { element: <Navigate to={DEFAULT_PATH} replace />, index: true },
         { path: "chat", element: <GeneralApp /> },
         { path: "feature-toggles", element: <FeatureToggles /> },
+        { path: "*", element: <Navigate to="/404" replace /> },
       ],
     },
-    { path: "*", element: <Navigate to="/404" replace /> },
   ]);
 }
