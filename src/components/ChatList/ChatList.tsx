@@ -16,10 +16,7 @@ const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
 
   const [currentChats, setCurrentChats] = useState(chats);
-  const [storedChats, updateStoredChats] = useLocalStorage<Chat[]>(
-    "ChatItems",
-    []
-  );
+  const [, updateStoredChats] = useLocalStorage<Chat[]>("ChatItems", []);
 
   // Update the chats in the chat bar when chats prop changes
   useEffect(() => {
