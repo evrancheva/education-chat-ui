@@ -27,7 +27,7 @@ const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
   }, [chats]);
 
   const removeChat = (id: number) => {
-    const updatedChatItems = storedChats.filter((chat) => chat.id !== id);
+    const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
     // Remove it from the chat bar
     setCurrentChats(updatedChatItems);
 
