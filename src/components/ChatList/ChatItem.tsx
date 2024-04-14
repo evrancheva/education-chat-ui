@@ -42,7 +42,6 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
       onClick={() => {
         searchParams.set("id", chat.id.toString());
         setSearchParams(searchParams);
-        console.log("Here");
       }}
       sx={{
         borderRadius: 1,
