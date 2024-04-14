@@ -1,7 +1,8 @@
 import { Box, IconButton, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import Logo from "../../assets/Images/logo.ico";
+import Logo from "../../../assets/Images/logo.ico";
 import { ChatCircleDots } from "phosphor-react";
+import { Link } from "react-router-dom";
 
 const SideBar: React.FC = () => {
   const theme = useTheme();
@@ -20,17 +21,19 @@ const SideBar: React.FC = () => {
         py={3}
         justifyContent="space-between"
       >
-        <Box
-          sx={{
-            height: 48,
-            width: 48,
-            borderRadius: 1.5,
-            backgroundColor: theme.palette.primary.main,
-          }}
-          p={1}
-        >
-          <img src={Logo} alt="Tawk" height={48} width={48} />
-        </Box>
+        <Link to="/chat" style={{ textDecoration: "none" }}>
+          <Box
+            sx={{
+              height: 48,
+              width: 48,
+              borderRadius: 1.5,
+              backgroundColor: theme.palette.primary.main,
+            }}
+            p={1}
+          >
+            <img src={Logo} alt="Tawk" height={48} width={48} />
+          </Box>
+        </Link>
         <Stack
           sx={{ width: "max-content" }}
           direction="column"
