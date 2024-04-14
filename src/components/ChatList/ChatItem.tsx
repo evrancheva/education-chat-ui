@@ -30,9 +30,10 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
     },
   }));
 
-  const deleteChat = (e: React.MouseEvent<HTMLDivElement>) => {
+  const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     removeChat(chat.id);
+    // By deleting the id param, we are opening the initial screen
     searchParams.delete("id");
     setSearchParams(searchParams);
   };
