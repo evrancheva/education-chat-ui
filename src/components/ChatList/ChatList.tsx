@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
-  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
 
   const [currentChats, setCurrentChats] = useState(chats);
   const [storedChats, updateStoredChats] = useLocalStorage<Chat[]>(

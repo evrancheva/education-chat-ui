@@ -13,7 +13,7 @@ interface Props {
 }
 
 const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
-  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const selectedChatId = searchParams.get("id") ?? "0";
@@ -30,8 +30,11 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
     },
   }));
 
-  const deleteChat = () => {
+  const deleteChat = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     removeChat(chat.id);
+    searchParams.delete("id");
+    setSearchParams(searchParams);
   };
 
   return (
@@ -39,6 +42,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
       onClick={() => {
         searchParams.set("id", chat.id.toString());
         setSearchParams(searchParams);
+        console.log("Here");
       }}
       sx={{
         borderRadius: 1,

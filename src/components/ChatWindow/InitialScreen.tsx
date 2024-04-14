@@ -7,7 +7,7 @@ interface Props {
 }
 
 const InitialScreen: React.FC<Props> = ({ isDialogOpen }) => {
-  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", false);
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
   const openDialog = () => {
     isDialogOpen(true);
   };

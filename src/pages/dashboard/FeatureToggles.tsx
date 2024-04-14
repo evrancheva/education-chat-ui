@@ -3,7 +3,7 @@ import { Stack, Switch, Typography } from "@mui/material";
 import useLocalStorage from "../../hooks/useLocalStore";
 
 const FeatureToggles: React.FC = () => {
-  const [checked, setChecked] = useLocalStorage<boolean>("IsAdmin", false);
+  const [checked, setChecked] = useLocalStorage<boolean>("IsAdmin", true);
 
   // Toggle switch state
   const toggleChecked = () => {
