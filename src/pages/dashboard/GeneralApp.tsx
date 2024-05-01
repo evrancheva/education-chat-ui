@@ -36,7 +36,7 @@ const GeneralApp: React.FC = () => {
 
   // This makes sure that the right chat is displayed on update of id search param
   useEffect(() => {
-    setCurrentChat(currentChats.find((chat) => chat.id === chatId));
+    setCurrentChat(currentChats.find((chat) => chat.chat_id === chatIdString));
   }, [chatId, currentChats]);
 
   return (

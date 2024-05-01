@@ -6,6 +6,7 @@ import type { Chat } from "./types";
 import { X } from "phosphor-react";
 import useLocalStorage from "../../hooks/useLocalStore";
 import { truncateText } from "../../utils/textUtils";
+import { getTimeFromISOString } from "../../utils/timeUtils";
 
 interface Props {
   chat: Chat;
@@ -18,7 +19,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
 
   const selectedChatId = searchParams.get("id") ?? "0";
 
-  let isSelected = +selectedChatId === chat.id;
+  let isSelected = selectedChatId === chat.chat_id.toString();
 
   if (!selectedChatId) {
     isSelected = false;
@@ -32,7 +33,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
 
   const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    removeChat(chat.id);
+    removeChat(parseInt(chat.chat_id));
     // By deleting the id param, we are opening the initial screen
     searchParams.delete("id");
     setSearchParams(searchParams);
@@ -41,7 +42,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
   return (
     <StyledChatBox
       onClick={() => {
-        searchParams.set("id", chat.id.toString());
+        searchParams.set("id", chat.chat_id);
         setSearchParams(searchParams);
       }}
       sx={{
@@ -61,7 +62,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
         </Stack>
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
-            {chat.time}
+            {getTimeFromISOString(chat.time)}
             {isAdmin ? (
               <IconButton
                 sx={{

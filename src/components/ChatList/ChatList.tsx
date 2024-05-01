@@ -6,31 +6,47 @@ import useLocalStorage from "../../hooks/useLocalStore";
 import { useEffect } from "react";
 import ChatItem from "./ChatItem";
 import type { Chat } from "./types";
+import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
+import { useQuery } from "@apollo/client";
 
 interface Props {
   setDialogOpen: (isOpen: boolean) => void;
   chats: Chat[];
 }
 
+const userId: string = "a1b2c3d4-e5f6-4g7h-8i9j-k0l1m2n3o4p5";
+
 const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
+  const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
+    variables: { userId },
+  });
+
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
+  const [currentChats, setCurrentChats] = useState([]);
 
-  const [currentChats, setCurrentChats] = useState(chats);
-  const [, updateStoredChats] = useLocalStorage<Chat[]>("ChatItems", []);
-
-  // Update the chats in the chat bar when chats prop changes
+  // Update currentChats only when loading is false
   useEffect(() => {
-    setCurrentChats(chats);
-  }, [chats]);
+    if (!loading && data) {
+      setCurrentChats(data.Chats);
+    }
+  }, [loading, data]);
 
-  const removeChat = (id: number) => {
-    const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
+  const removeChat = (id: string) => {
+    const updatedChatItems = currentChats.filter((chat) => chat.chat_id !== id);
     // Remove it from the chat bar
     setCurrentChats(updatedChatItems);
 
     // Remove it from localStorage
-    updateStoredChats(updatedChatItems);
   };
+
+  // TO DO: Improve that
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
   return (
     <Box
@@ -61,7 +77,7 @@ const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
           </IconButton>
         </Typography>
         <Box pr={2} sx={{ overflowY: "scroll", height: "100%" }}>
-          {currentChats.map((el, idx) => {
+          {data.Chats.map((el, idx) => {
             return <ChatItem key={idx} chat={el} removeChat={removeChat} />;
           })}
         </Box>

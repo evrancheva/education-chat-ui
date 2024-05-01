@@ -1,7 +1,12 @@
+import { Message } from "../ChatWindow/types";
+
 export type Chat = {
-  id: number;
+  _id: { $oid: string };
+  chat_id: string;
+  user_id: string;
   name: string;
-  description?: string;
+  description: string;
   instructions: string;
+  messages: Message[];
   time: string;
 };
