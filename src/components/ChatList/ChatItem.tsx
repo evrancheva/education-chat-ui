@@ -10,7 +10,7 @@ import { getTimeFromISOString } from "../../utils/timeUtils";
 
 interface Props {
   chat: Chat;
-  removeChat: (id: number) => void;
+  removeChat: (id: string) => void;
 }
 
 const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
@@ -33,7 +33,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
 
   const deleteChat = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    removeChat(parseInt(chat.chat_id));
+    removeChat(chat.chat_id);
     // By deleting the id param, we are opening the initial screen
     searchParams.delete("id");
     setSearchParams(searchParams);

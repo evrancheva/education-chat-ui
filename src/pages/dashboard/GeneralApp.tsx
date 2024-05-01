@@ -8,25 +8,31 @@ import FormDialog from "../../components/Shared/Chat/FormDialog";
 import { useState } from "react";
 import { Chat } from "../../components/ChatList/types";
 import { useSearchParams } from "react-router-dom";
-import useLocalStorage from "../../hooks/useLocalStore";
+import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
+import { useQuery } from "@apollo/client";
+
+const userId: string = "a1b2c3d4-e5f6-4g7h-8i9j-k0l1m2n3o4p5";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
   const chatId = chatIdString ? parseInt(chatIdString) : null;
-
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  // Used for loading the existing chats
-  const [storedChatItems] = useLocalStorage<Chat[]>("ChatItems", []);
-  const [currentChats, updateCurrentChats] = useState(storedChatItems);
+  const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
+    variables: { userId },
+  });
+
+  // Used for showing the chats in the bar
+  const [currentChats, updateCurrentChats] = useState<Chat[]>([]);
 
   // Used for opening the right chat when a new chat is added or selected
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   // On adding a new chat, we need to add it to the history bar
   const addNewChat = (newChat: Chat) => {
+    // TO DO: Add it also to the grapQL
     updateCurrentChats([newChat, ...currentChats]);
   };
 
@@ -36,8 +42,20 @@ const GeneralApp: React.FC = () => {
 
   // This makes sure that the right chat is displayed on update of id search param
   useEffect(() => {
+    if (!loading && data) {
+      updateCurrentChats(data.Chats);
+    }
     setCurrentChat(currentChats.find((chat) => chat.chat_id === chatIdString));
-  }, [chatId, currentChats]);
+  }, [loading, data, chatIdString, currentChats]);
+
+  // TO DO: Improve that
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
   return (
     <>
