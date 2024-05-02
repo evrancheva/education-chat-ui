@@ -15,10 +15,16 @@ import { List as ListIcon } from "phosphor-react";
 import useLocalStorage from "../../../hooks/useLocalStore";
 import { Link } from "react-router-dom";
 import { Chat } from "../../ChatList/types";
+import { PlusCircle } from "phosphor-react";
 
-export default function MobileNav() {
+interface Props {
+  setDialogOpen: (isOpen: boolean) => void;
+  chats: Chat[];
+}
+
+const MobileNav: React.FC<Props> = ({ setDialogOpen, chats }) => {
+  const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
   const [open, setOpen] = useState(false);
-  const [chats] = useLocalStorage<Chat[]>("ChatItems", []);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -50,18 +56,27 @@ export default function MobileNav() {
         <Box
           sx={{
             width: "100%",
-            alignItems: "center",
           }}
         >
           <Typography
             variant="h5"
             sx={{
               color: "#676667",
+              display: "flex",
+              alignItems: "center",
             }}
             ml={2}
             pt={2}
           >
             All Chats
+            {isAdmin && (
+              <IconButton
+                sx={{ color: "#1976d2" }}
+                onClick={() => setDialogOpen(true)}
+              >
+                <PlusCircle />
+              </IconButton>
+            )}
           </Typography>
           <Divider component="li" />
         </Box>
@@ -84,4 +99,6 @@ export default function MobileNav() {
       </Drawer>
     </Box>
   );
-}
+};
+
+export default MobileNav;

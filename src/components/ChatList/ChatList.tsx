@@ -6,6 +6,8 @@ import useLocalStorage from "../../hooks/useLocalStore";
 import { useEffect } from "react";
 import ChatItem from "./ChatItem";
 import type { Chat } from "./types";
+import { useMutation } from "@apollo/client";
+import { DELETE_CHAT_MUTATION } from "../../graphQl/chatMutations";
 
 interface Props {
   setDialogOpen: (isOpen: boolean) => void;
@@ -13,6 +15,7 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
+  const [deleteChat] = useMutation(DELETE_CHAT_MUTATION);
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
 
   const [currentChats, setCurrentChats] = useState(chats);
@@ -22,12 +25,20 @@ const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
     setCurrentChats(chats);
   }, [chats]);
 
-  const removeChat = (id: string) => {
-    const updatedChatItems = currentChats.filter((chat) => chat.chat_id !== id);
+  const deleteChatFromDb = async (id: number) => {
+    try {
+      const { data } = await deleteChat({ variables: { chatId: id } });
+      console.log("Chat deleted successfully:", data);
+    } catch (error: any) {
+      console.error("Error deleting chat:", error.message);
+    }
+  };
+
+  const removeChat = (id: number) => {
+    const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
     // Remove it from the chat bar
     setCurrentChats(updatedChatItems);
-
-    // TO DO: Remove it from localStorage -> Delete from DB
+    deleteChatFromDb(id);
   };
 
   return (

@@ -8,9 +8,13 @@ export function getCurrentTime(): string {
   });
 }
 
-export function getTimeFromISOString(dateTimeString: string): string {
-  const dateTime = new Date(dateTimeString);
-  const options = { hour12: false, hour: "2-digit", minute: "2-digit" };
-  const timeString = dateTime.toLocaleTimeString("en-US", options);
-  return timeString;
+export function getTimeFromDatetime(datetimeStr: string) {
+  // Parse the datetime string
+  const dt = new Date(datetimeStr);
+  // Extract hours and minutes
+  const hours = dt.getHours().toString().padStart(2, "0");
+  const minutes = dt.getMinutes().toString().padStart(2, "0");
+  // Concatenate hours and minutes
+  const time = hours + ":" + minutes;
+  return time;
 }

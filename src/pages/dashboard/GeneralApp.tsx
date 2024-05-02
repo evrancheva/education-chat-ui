@@ -9,16 +9,20 @@ import { useState } from "react";
 import { Chat } from "../../components/ChatList/types";
 import { useSearchParams } from "react-router-dom";
 import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
-import { useQuery } from "@apollo/client";
+import { INSERT_CHAT_MUTATION } from "../../graphQl/chatMutations";
+import { useQuery, useMutation } from "@apollo/client";
+import MobileNav from "../../components/Shared/Navigation/MobileNav";
 
-const userId: string = "a1b2c3d4-e5f6-4g7h-8i9j-k0l1m2n3o4p5";
+const userId: number = 1;
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const chatIdString = searchParams.get("id");
   const chatId = chatIdString ? parseInt(chatIdString) : null;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const [insertChat] = useMutation(INSERT_CHAT_MUTATION);
 
   const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
     variables: { userId },
@@ -30,10 +34,35 @@ const GeneralApp: React.FC = () => {
   // Used for opening the right chat when a new chat is added or selected
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
-  // On adding a new chat, we need to add it to the history bar
-  const addNewChat = (newChat: Chat) => {
-    // TO DO: Add it also to the grapQL
-    updateCurrentChats([newChat, ...currentChats]);
+  const addNewChat = async (newChat: Chat) => {
+    const chat = await addChatToDb(newChat);
+    searchParams.set("id", chat.id.toString());
+    setSearchParams(searchParams);
+    setCurrentChat(chat);
+  };
+
+  const addChatToDb = async (chat: Chat): Promise<Chat> => {
+    try {
+      const { data } = await insertChat({
+        variables: {
+          chat: {
+            user_id: userId,
+            name: chat.name,
+            description: chat.description,
+            instructions: chat.instructions,
+          },
+        },
+        refetchQueries: [
+          { query: GET_CHATS_BY_USER_ID, variables: { userId } },
+        ],
+      });
+
+      const chatId = data?.insert_chats_one ?? null;
+      return chatId;
+    } catch (error) {
+      console.error("Error adding chat:", error);
+      return null;
+    }
   };
 
   const setDialogOpen = (isOpen: boolean) => {
@@ -42,11 +71,10 @@ const GeneralApp: React.FC = () => {
 
   // This makes sure that the right chat is displayed on update of id search param
   useEffect(() => {
-    if (!loading && data) {
-      updateCurrentChats(data.Chats);
+    if (!loading) {
+      updateCurrentChats(data.chats);
     }
-    setCurrentChat(currentChats.find((chat) => chat.chat_id === chatIdString));
-  }, [loading, data, chatIdString, currentChats]);
+  }, [loading, data]);
 
   // TO DO: Improve that
   if (loading) {
@@ -60,8 +88,10 @@ const GeneralApp: React.FC = () => {
   return (
     <>
       <Stack direction="row" sx={{ width: "100%", height: "100vh" }}>
-        {!isMobile && (
+        {!isMobile ? (
           <Chats setDialogOpen={setDialogOpen} chats={currentChats} />
+        ) : (
+          <MobileNav setDialogOpen={setDialogOpen} chats={currentChats} />
         )}
         <Box
           sx={{
