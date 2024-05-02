@@ -12,6 +12,8 @@ import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
 import { INSERT_CHAT_MUTATION } from "../../graphQl/chatMutations";
 import { useQuery, useMutation } from "@apollo/client";
 import MobileNav from "../../components/Shared/Navigation/MobileNav";
+import LoadingScreen from "../../components/Shared/LoadingScreen";
+import ErrorPage from "../../components/Shared/Error";
 
 const userId: number = 1;
 
@@ -20,6 +22,7 @@ const GeneralApp: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [insertChat] = useMutation(INSERT_CHAT_MUTATION);
   const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
@@ -33,11 +36,15 @@ const GeneralApp: React.FC = () => {
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   const addNewChat = async (newChat: Chat) => {
-    const chat = await addChatToDb(newChat);
-    searchParams.set("id", chat.id.toString());
-    setSearchParams(searchParams);
-
-    isMobile ? setIsDrawerOpen(false) : null;
+    try {
+      setIsLoading(true);
+      const chat = await addChatToDb(newChat);
+      searchParams.set("id", chat.id.toString());
+      setSearchParams(searchParams);
+      isMobile ? setIsDrawerOpen(false) : null;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addChatToDb = async (chat: Chat): Promise<Chat> => {
@@ -76,13 +83,12 @@ const GeneralApp: React.FC = () => {
     }
   }, [data, searchParams]);
 
-  // TO DO: Improve that
-  if (loading) {
-    return <p>Loading...</p>;
+  if ((loading && !data) || isLoading) {
+    return <LoadingScreen />;
   }
 
   if (error) {
-    return <p>Error: {error.message}</p>;
+    return <ErrorPage message={error.message} />;
   }
 
   return (
