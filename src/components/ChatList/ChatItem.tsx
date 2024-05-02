@@ -7,7 +7,6 @@ import { X } from "phosphor-react";
 import useLocalStorage from "../../hooks/useLocalStore";
 import { truncateText } from "../../utils/textUtils";
 import { getTimeFromDatetime } from "../../utils/timeUtils";
-
 interface Props {
   chat: Chat;
   removeChat: (id: number) => void;

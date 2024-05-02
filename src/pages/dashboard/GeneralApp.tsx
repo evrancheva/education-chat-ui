@@ -18,12 +18,10 @@ const userId: number = 1;
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
   const [searchParams, setSearchParams] = useSearchParams();
-  const chatIdString = searchParams.get("id");
-  const chatId = chatIdString ? parseInt(chatIdString) : null;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [insertChat] = useMutation(INSERT_CHAT_MUTATION);
-
   const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
     variables: { userId },
   });
@@ -38,7 +36,8 @@ const GeneralApp: React.FC = () => {
     const chat = await addChatToDb(newChat);
     searchParams.set("id", chat.id.toString());
     setSearchParams(searchParams);
-    setCurrentChat(chat);
+
+    isMobile ? setIsDrawerOpen(false) : null;
   };
 
   const addChatToDb = async (chat: Chat): Promise<Chat> => {
@@ -69,12 +68,13 @@ const GeneralApp: React.FC = () => {
     setIsDialogOpen(isOpen);
   };
 
-  // This makes sure that the right chat is displayed on update of id search param
   useEffect(() => {
-    if (!loading) {
+    if (!loading && data && data.chats) {
       updateCurrentChats(data.chats);
+      const chatId = parseInt(searchParams.get("id"));
+      setCurrentChat(data.chats.find((chat: Chat) => chat.id === chatId));
     }
-  }, [loading, data]);
+  }, [data, searchParams]);
 
   // TO DO: Improve that
   if (loading) {
@@ -91,16 +91,19 @@ const GeneralApp: React.FC = () => {
         {!isMobile ? (
           <Chats setDialogOpen={setDialogOpen} chats={currentChats} />
         ) : (
-          <MobileNav setDialogOpen={setDialogOpen} chats={currentChats} />
+          <MobileNav
+            setDialogOpen={setDialogOpen}
+            chats={currentChats}
+            isDrawerOpen={isDrawerOpen}
+          />
         )}
         <Box
           sx={{
             width: "100%",
             backgroundColor: "#FFF",
-            borderBottom: chatId ? "0px" : "6px solid #0162C4",
           }}
         >
-          {chatId && currentChat ? (
+          {currentChat ? (
             <ChatWindow currentChat={currentChat} />
           ) : (
             <InitialScreen isDialogOpen={setDialogOpen} />
