@@ -28,7 +28,7 @@ interface Props {
 const MobileNav: React.FC<Props> = ({ setDialogOpen, chats, isDrawerOpen }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(isDrawerOpen);
   const [deleteChat] = useMutation(DELETE_CHAT_MUTATION);
 
   const [currentChats, setCurrentChats] = useState<Chat[]>([]);
@@ -43,22 +43,20 @@ const MobileNav: React.FC<Props> = ({ setDialogOpen, chats, isDrawerOpen }) => {
     toggleDrawer();
   };
 
-  const deleteChatFromDb = async (id: number) => {
-    try {
-      await deleteChat({ variables: { chatId: id } });
-    } catch (error: any) {
-      console.error("Error deleting chat:", error.message);
-    }
-  };
-
-  const removeChat = (id: number) => {
-    deleteChatFromDb(id);
+  const removeChat = async (id: number) => {
+    //delete from db
+    await deleteChat({ variables: { chatId: id } });
 
     const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
     setCurrentChats(updatedChatItems);
 
     searchParams.delete("id");
     setSearchParams(searchParams);
+
+    // Close the drawer if it's the last chat
+    if (updatedChatItems.length === 0) {
+      setOpen(false);
+    }
   };
 
   useEffect(() => {
