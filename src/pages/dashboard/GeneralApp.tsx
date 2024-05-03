@@ -99,7 +99,7 @@ const GeneralApp: React.FC = () => {
         />
       )}
       <Box sx={{ width: "100%", backgroundColor: "#FFF" }}>
-        {currentChat ? (
+        {searchParams.get("id") ? (
           <ChatWindow currentChat={currentChat} />
         ) : (
           <InitialScreen isDialogOpen={setDialogOpen} />
