@@ -6,19 +6,13 @@ import { Message } from "../../../components/ChatWindow/types";
 const EDUCATION_API_URL: string = import.meta.env.VITE_EDUCATION_API_URL || "";
 
 const getAnswer = async (
-  systemInstructions: string[],
-  customInstructions: string[],
+  allSystemInstructions: string,
   conversation: Message[]
 ): Promise<string> => {
   try {
-    const mappedSystemInstructions = mapInstructions(systemInstructions);
-    const mappedAdminInstructions = mapInstructions(customInstructions);
+    const mappedSystemInstructions = mapInstructions(allSystemInstructions);
     const messages = mapMessages(conversation);
-    const context = [
-      ...mappedSystemInstructions,
-      ...mappedAdminInstructions,
-      ...messages,
-    ];
+    const context = [mappedSystemInstructions, ...messages];
 
     const endpoint = `${EDUCATION_API_URL}/ask`;
     const body = JSON.stringify(context);

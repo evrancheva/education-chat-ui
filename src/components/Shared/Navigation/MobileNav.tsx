@@ -28,6 +28,7 @@ interface Props {
 const MobileNav: React.FC<Props> = ({ setDialogOpen, chats, isDrawerOpen }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
+  
   const [open, setOpen] = useState(isDrawerOpen);
   const [deleteChat] = useMutation(DELETE_CHAT_MUTATION);
 
