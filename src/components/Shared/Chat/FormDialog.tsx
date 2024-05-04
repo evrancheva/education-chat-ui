@@ -9,8 +9,8 @@ import {
   DialogActions,
 } from "@mui/material";
 import { Chat } from "../../ChatList/types";
+import { USER_ID } from "../../../data";
 
-const userId: number = 1;
 interface FormDialogProps {
   isOpen: boolean;
   onClose: () => void;
@@ -28,11 +28,11 @@ const FormDialog: React.FC<FormDialogProps> = ({
     const instructions = formData.get("instructions");
 
     if (name === null || instructions === null) {
-      return; // Exit early if required data is missing
+      return;
     }
 
     const newChat: Chat = {
-      user_id: userId,
+      user_id: USER_ID,
       name: name.toString(),
       description: description?.toString(),
       instructions: instructions.toString(),

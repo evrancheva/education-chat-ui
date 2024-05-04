@@ -13,8 +13,7 @@ import ErrorPage from "../../components/Shared/Error";
 import { INSERT_CHAT_MUTATION } from "../../graphQl/chatMutations";
 import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
 import { Chat } from "../../components/ChatList/types";
-
-const userId = 1;
+import { USER_ID } from "../../data";
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
@@ -25,7 +24,7 @@ const GeneralApp: React.FC = () => {
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
-    variables: { userId },
+    variables: { USER_ID },
   });
 
   const [insertChat] = useMutation(INSERT_CHAT_MUTATION);
@@ -48,14 +47,14 @@ const GeneralApp: React.FC = () => {
       const { data } = await insertChat({
         variables: {
           chat: {
-            user_id: userId,
+            user_id: USER_ID,
             name: chat.name,
             description: chat.description,
             instructions: chat.instructions,
           },
         },
         refetchQueries: [
-          { query: GET_CHATS_BY_USER_ID, variables: { userId } },
+          { query: GET_CHATS_BY_USER_ID, variables: { USER_ID } },
         ],
       });
       return data?.insert_chats_one ?? null;
