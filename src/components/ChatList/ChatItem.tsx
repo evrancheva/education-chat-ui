@@ -6,7 +6,7 @@ import type { Chat } from "./types";
 import { X } from "phosphor-react";
 import useLocalStorage from "../../hooks/useLocalStore";
 import { truncateText } from "../../utils/textUtils";
-
+import { getTimeFromDatetime } from "../../utils/timeUtils";
 interface Props {
   chat: Chat;
   removeChat: (id: number) => void;
@@ -18,7 +18,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
 
   const selectedChatId = searchParams.get("id") ?? "0";
 
-  let isSelected = +selectedChatId === chat.id;
+  let isSelected = selectedChatId === chat.id?.toString();
 
   if (!selectedChatId) {
     isSelected = false;
@@ -61,7 +61,7 @@ const ChatItem: React.FC<Props> = ({ chat, removeChat }) => {
         </Stack>
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
-            {chat.time}
+            {getTimeFromDatetime(chat.createdAt)}
             {isAdmin ? (
               <IconButton
                 sx={{

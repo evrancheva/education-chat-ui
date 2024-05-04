@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Stack, Typography, IconButton } from "@mui/material";
 import { PlusCircle } from "phosphor-react";
 import { useState } from "react";
 import useLocalStorage from "../../hooks/useLocalStore";
-import { useEffect } from "react";
 import ChatItem from "./ChatItem";
 import type { Chat } from "./types";
+import { useMutation } from "@apollo/client";
+import { DELETE_CHAT_MUTATION } from "../../graphQl/chatMutations";
 
 interface Props {
   setDialogOpen: (isOpen: boolean) => void;
@@ -13,24 +14,28 @@ interface Props {
 }
 
 const Chats: React.FC<Props> = ({ setDialogOpen, chats }) => {
+  const [deleteChat] = useMutation(DELETE_CHAT_MUTATION);
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
 
-  const [currentChats, setCurrentChats] = useState(chats);
-  const [, updateStoredChats] = useLocalStorage<Chat[]>("ChatItems", []);
+  const [currentChats, setCurrentChats] = useState<Chat[]>(chats);
 
-  // Update the chats in the chat bar when chats prop changes
+  const deleteChatFromDb = async (id: number) => {
+    try {
+      await deleteChat({ variables: { chatId: id } });
+    } catch (error: any) {
+      console.error("Error deleting chat:", error.message);
+    }
+  };
+
+  const removeChat = async (id: number) => {
+    const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
+    setCurrentChats(updatedChatItems);
+    await deleteChatFromDb(id);
+  };
+
   useEffect(() => {
     setCurrentChats(chats);
   }, [chats]);
-
-  const removeChat = (id: number) => {
-    const updatedChatItems = currentChats.filter((chat) => chat.id !== id);
-    // Remove it from the chat bar
-    setCurrentChats(updatedChatItems);
-
-    // Remove it from localStorage
-    updateStoredChats(updatedChatItems);
-  };
 
   return (
     <Box

@@ -20,9 +20,8 @@ const InitialHelloMessage: Message = {
 };
 
 // Used for storing instructions passed from our app instructing how OpenAI should behave
-const SystemInstructions: string[] = [
-  "You are a helpful chatbot. You respond completely in valid HTML. Return only the content after the <body> tags. If there is a formula, format it in Latex.",
-];
+const SystemInstructions: string =
+  "You respond completely in valid HTML. Return only the content after the <body> tags. If there is a formula, format it in Latex.";
 
 // Used for storing all the messages that are passed to OpenAI for context
 const Conversation: Message[] = [];
@@ -32,8 +31,11 @@ const ChatWindow: React.FC<Props> = ({ currentChat }) => {
   const [chatHistory, setChatHistory] = useState<Message[]>([]);
 
   // Used for storing instructions passed from the creator of the chat instructing how OpenAI should behave
-  const CustomInstructions =
+  const CustomSystemInstructions =
     currentChat && currentChat.instructions ? [currentChat.instructions] : [];
+
+  const AllSystemInstructions =
+    SystemInstructions + " " + CustomSystemInstructions;
 
   useEffect(() => {
     setChatHistory([InitialHelloMessage]);
@@ -44,11 +46,7 @@ const ChatWindow: React.FC<Props> = ({ currentChat }) => {
   ): Promise<string | null> {
     let response: string | null;
     try {
-      response = await getAnswer(
-        SystemInstructions,
-        CustomInstructions,
-        Conversation
-      );
+      response = await getAnswer(AllSystemInstructions, Conversation);
     } catch (error) {
       console.error("An error occurred:", error);
       response = null;
@@ -56,7 +54,6 @@ const ChatWindow: React.FC<Props> = ({ currentChat }) => {
     return response;
   }
 
-  // Function to handle the question
   const handleQuestion = async (q: string): Promise<void> => {
     if (!q) return;
 

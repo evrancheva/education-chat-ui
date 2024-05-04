@@ -1,8 +1,10 @@
 import { OpenAIMessage, Role } from "../types";
 
-export const mapInstructions = (messages: string[]): OpenAIMessage[] => {
-  return messages.map((message) => ({
+export const mapInstructions = (instructions: string): OpenAIMessage => {
+  const systemInstructions: OpenAIMessage = {
     role: Role.SYSTEM,
-    content: message,
-  }));
+    content: instructions,
+  };
+
+  return systemInstructions;
 };
