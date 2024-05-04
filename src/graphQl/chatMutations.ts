@@ -4,9 +4,11 @@ export const INSERT_CHAT_MUTATION = gql`
   mutation AddChat($chat: chats_insert_input!) {
     insert_chats_one(object: $chat) {
       id
+      user_id
       description
       instructions
       name
+      createdAt
     }
   }
 `;

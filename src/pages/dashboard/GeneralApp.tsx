@@ -12,8 +12,9 @@ import LoadingScreen from "../../components/Shared/LoadingScreen";
 import ErrorPage from "../../components/Shared/Error";
 import { INSERT_CHAT_MUTATION } from "../../graphQl/chatMutations";
 import { GET_CHATS_BY_USER_ID } from "../../graphQl/chatQueries";
-import { Chat } from "../../components/ChatList/types";
-import { USER_ID } from "../../data";
+import { Chat, ChatModel } from "../../components/ChatList/types";
+
+const userId = 1;
 
 const GeneralApp: React.FC = () => {
   const isMobile = useResponsive("between", "md", "xs", "sm");
@@ -24,7 +25,7 @@ const GeneralApp: React.FC = () => {
   const [currentChat, setCurrentChat] = useState<Chat | undefined>();
 
   const { loading, error, data } = useQuery(GET_CHATS_BY_USER_ID, {
-    variables: { USER_ID },
+    variables: { userId },
   });
 
   const [insertChat] = useMutation(INSERT_CHAT_MUTATION);
@@ -42,19 +43,19 @@ const GeneralApp: React.FC = () => {
     }
   }, [searchParams, currentChats]);
 
-  const addChatToDb = async (chat: Chat) => {
+  const addChatToDb = async (chat: ChatModel) => {
     try {
       const { data } = await insertChat({
         variables: {
           chat: {
-            user_id: USER_ID,
+            user_id: userId,
             name: chat.name,
             description: chat.description,
             instructions: chat.instructions,
           },
         },
         refetchQueries: [
-          { query: GET_CHATS_BY_USER_ID, variables: { USER_ID } },
+          { query: GET_CHATS_BY_USER_ID, variables: { userId } },
         ],
       });
       return data?.insert_chats_one ?? null;
@@ -64,13 +65,15 @@ const GeneralApp: React.FC = () => {
     }
   };
 
-  const handleNewChat = async (newChat: Chat) => {
+  const handleNewChat = async (newChat: ChatModel) => {
     isMobile && setIsDrawerOpen(false);
 
-    const chat = await addChatToDb(newChat);
-    setCurrentChat(chat);
+    const responseChat = await addChatToDb(newChat);
+    setCurrentChat(
+      currentChats.find((chat: Chat) => chat.id === responseChat.id)
+    );
 
-    searchParams.set("id", chat.id.toString());
+    searchParams.set("id", responseChat.id.toString());
     setSearchParams(searchParams);
   };
 

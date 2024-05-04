@@ -8,13 +8,13 @@ import {
   DialogContentText,
   DialogActions,
 } from "@mui/material";
-import { Chat } from "../../ChatList/types";
-import { USER_ID } from "../../../data";
+import { ChatModel } from "../../ChatList/types";
 
+const userId = 1;
 interface FormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  addNewChat: (newChat: Chat) => void;
+  addNewChat: (newChat: ChatModel) => void;
 }
 
 const FormDialog: React.FC<FormDialogProps> = ({
@@ -31,8 +31,8 @@ const FormDialog: React.FC<FormDialogProps> = ({
       return;
     }
 
-    const newChat: Chat = {
-      user_id: USER_ID,
+    const newChat: ChatModel = {
+      user_id: userId,
       name: name.toString(),
       description: description?.toString(),
       instructions: instructions.toString(),

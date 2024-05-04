@@ -9,7 +9,7 @@ import { Chat } from "../ChatList/types";
 import { useEffect } from "react";
 
 interface Props {
-  currentChat: Chat;
+  currentChat?: Chat;
 }
 
 const InitialHelloMessage: Message = {
