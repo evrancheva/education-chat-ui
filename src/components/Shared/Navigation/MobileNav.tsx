@@ -28,7 +28,7 @@ interface Props {
 const MobileNav: React.FC<Props> = ({ setDialogOpen, chats, isDrawerOpen }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [isAdmin] = useLocalStorage<boolean>("IsAdmin", true);
-  
+
   const [open, setOpen] = useState(isDrawerOpen);
   const [deleteChat] = useMutation(DELETE_CHAT_MUTATION);
 
@@ -118,7 +118,7 @@ const MobileNav: React.FC<Props> = ({ setDialogOpen, chats, isDrawerOpen }) => {
 
         <List>
           {currentChats.map((el) => (
-            <ListItem key={el.id}>
+            <ListItem key={el.id} sx={{ cursor: "pointer" }}>
               <ListItemText
                 primary={el.name}
                 onClick={() => handleOnClick(el.id)}
